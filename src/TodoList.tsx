@@ -1,10 +1,19 @@
 import React from 'react';
+type TasksType = {
+  id: number;
+  title: string;
+  isDone: boolean;
+}
+type TitleProps = { 
+  title: string; 
+  tasks: Array<TasksType>;
+}
 
-export function TodoList() {
+export function TodoList(props: TitleProps) {
   return (
     <div className="App">
       <div>
-        <h3>What to learn</h3>
+        <h3>{ props.title }</h3>
         <div>
           <input />
           <button>+</button>
@@ -19,6 +28,11 @@ export function TodoList() {
           <button>Active</button>
           <button>Completed</button>
         </div>
+        <ul>
+          <li><input type="checkbox" checked={props.tasks[0].isDone}/> <span>{props.tasks[0].title}</span></li>
+          <li><input type="checkbox" checked={props.tasks[1].isDone}/> <span>{props.tasks[1].title}</span></li>
+          <li><input type="checkbox" checked={props.tasks[2].isDone}/> <span>{props.tasks[2].title}</span></li>
+        </ul>
       </div>
     </div>
   );
