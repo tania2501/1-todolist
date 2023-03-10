@@ -1,7 +1,11 @@
+import { Box, Button, Checkbox, Grid } from "@mui/material";
 import React, { ChangeEvent } from "react";
 import { FilterValuesType } from "./App";
 import { EditableSpan } from "./EditableSpan";
 import { SuperInput } from "./SuperInput";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import { SuperButton } from "./SuperButton";
 
 export type TasksType = {
   id: string;
@@ -16,39 +20,44 @@ type TitleProps = {
   addTasks: (title: string, todolistId: string) => void;
   changeStatus: (taskId: string, isDone: boolean, todolistId: string) => void;
   filter: FilterValuesType;
-  tId: string
-  removeTodolist: (todolistId: string)=> void
+  tId: string;
+  removeTodolist: (todolistId: string) => void;
   changeTitleValue: (taskId: string, title: string, todolistId: string) => void;
   changeTodolistTitle: (title: string, todolistId: string) => void;
 };
 
 export function TodoList(props: TitleProps) {
   const onAllClick = () => {
-    props.changeFilter("all", props.tId);
+    props.changeFilter("All", props.tId);
   };
   const onCompletedClick = () => {
-    props.changeFilter("done", props.tId);
+    props.changeFilter("Done", props.tId);
   };
   const onActiveClick = () => {
-    props.changeFilter("active", props.tId);
+    props.changeFilter("Active", props.tId);
   };
   const removeTodolist = () => {
-    props.removeTodolist(props.tId)
-  }
-  const addTask = (title: string)=> {
-    props.addTasks(title, props.tId)
-  }
+    props.removeTodolist(props.tId);
+  };
+  const addTask = (title: string) => {
+    props.addTasks(title, props.tId);
+  };
   const changeTodolistTitleHandler = (title: string) => {
-    props.changeTodolistTitle(title, props.tId)
-  }
+    props.changeTodolistTitle(title, props.tId);
+  };
   return (
     <div className="todo">
       <div>
         <h3 className="title">
-          <EditableSpan title={props.title} changeTitleValue={changeTodolistTitleHandler}/>
-          <button onClick={removeTodolist}>x</button>
+          <EditableSpan
+            title={props.title}
+            changeTitleValue={changeTodolistTitleHandler}
+          />
+          <Button onClick={removeTodolist} color="secondary">
+            <DeleteIcon />
+          </Button>
         </h3>
-        <SuperInput addItem={addTask}/>
+        <SuperInput addItem={addTask} />
         <ul className="listblock">
           {props.tasks.map((t) => {
             const onClickHandler = () => props.removeTask(t.id, props.tId);
@@ -59,26 +68,52 @@ export function TodoList(props: TitleProps) {
               props.changeTitleValue(t.id, newTitle, props.tId);
             };
             return (
-              <li key={t.id} className={'list' + (t.isDone ? ' ' + 'is-done' : '')}>
-                <input
-                  type="checkbox"
+              <li
+                key={t.id}
+                className={"list" + (t.isDone ? " " + "is-done" : "")}
+              >
+                <Checkbox
+                  color="secondary"
                   onChange={onChangeTypeHandler}
                   checked={t.isDone}
-                  className='checkbox'
+                  className="checkbox"
                 />
-                <EditableSpan title={t.title} changeTitleValue={onChangeTitleHandler}/>
-                <button onClick={onClickHandler}>x</button>
+
+                <EditableSpan
+                  title={t.title}
+                  changeTitleValue={onChangeTitleHandler}
+                />
+
+                <Button
+                  onClick={onClickHandler}
+                  size="small"
+                  color="secondary"
+                  className="close"
+                >
+                  <DeleteOutlinedIcon />
+                </Button>
               </li>
             );
           })}
         </ul>
         <div className="filterButton">
-          <button className={props.filter === 'all' ? 'active-filter' : ''} onClick={onAllClick}>All</button>
-          <button className={props.filter === 'active' ? 'active-filter' : ''} onClick={onActiveClick}>Active</button>
-          <button className={props.filter === 'done' ? 'active-filter' : ''} onClick={onCompletedClick}>Done &#10004;</button>
+          <SuperButton
+            title={"All"}
+            onclick={onAllClick}
+            filterType={props.filter}
+          />
+          <SuperButton
+            title={"Active"}
+            onclick={onActiveClick}
+            filterType={props.filter}
+          />
+          <SuperButton
+            title={"Done"}
+            onclick={onCompletedClick}
+            filterType={props.filter}
+          />
         </div>
       </div>
     </div>
   );
 }
-

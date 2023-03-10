@@ -1,3 +1,4 @@
+import { Button, Input } from "@mui/material";
 import React, { ChangeEvent, useState, KeyboardEvent } from "react";
 
 type SuperInputType = {
@@ -30,12 +31,12 @@ export const SuperInput = (props: SuperInputType) => {
 
   return (
     <div>
-      <input
+      <Input
         value={newTaskTitle}
         onChange={onNewTitleChange}
         onKeyDown={onPressKeyHandler}
-        className={error ? 'error' : ''} />
-      <button onClick={addNewTask}>+</button>
+        id="outlined-basic" color="secondary"/>
+      <Button onClick={addNewTask} color='secondary' variant="contained" size="small">+</Button>
       {error && <div className="errorMessage">{error}</div>}
     </div>
   )

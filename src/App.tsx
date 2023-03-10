@@ -4,7 +4,7 @@ import "./App.css";
 import { SuperInput } from "./SuperInput";
 import { TodoList } from "./TodoList";
 
-export type FilterValuesType = 'all' | 'done' | 'active';
+export type FilterValuesType = 'All' | 'Done' | 'Active';
 
 type TodolistType = {
   id: string
@@ -71,8 +71,8 @@ function App() {
   let todolist2 = v1();
 
   let [todolist, setTodolist] = useState<Array<TodolistType>> ([
-    {id: todolist1, title: 'What to learn', filter: 'all'},
-    {id: todolist2, title: 'What to buy', filter: 'all'}
+    {id: todolist1, title: 'What to learn', filter: 'All'},
+    {id: todolist2, title: 'What to buy', filter: 'All'}
   ]);
   let [tasks, setTasks] = useState<MainTasksType>({
       [todolist1]: [
@@ -97,7 +97,7 @@ function App() {
   const addTodolist = (title: string) => {
     let newTodolist: TodolistType = {
       id: v1(),
-      filter: 'all',
+      filter: 'All',
       title: title
     }
     setTodolist([newTodolist, ...todolist]);
@@ -116,10 +116,10 @@ function App() {
       <SuperInput addItem={addTodolist}/>
       {todolist.map((tl) => {
          let taskForTodoList = tasks[tl.id];
-         if (tl.filter === 'done') {
+         if (tl.filter === 'Done') {
            taskForTodoList = taskForTodoList.filter(t => t.isDone === true);
          };
-         if (tl.filter === 'active') {
+         if (tl.filter === 'Active') {
            taskForTodoList = taskForTodoList.filter(t => t.isDone === false);
          };
 
