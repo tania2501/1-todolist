@@ -1,5 +1,6 @@
-import { Button, Input } from "@mui/material";
+import { IconButton, TextField } from "@mui/material";
 import React, { ChangeEvent, useState, KeyboardEvent } from "react";
+import { AddToPhotos } from "@mui/icons-material";
 
 type SuperInputType = {
   addItem: (title: string) => void;
@@ -31,13 +32,15 @@ export const SuperInput = (props: SuperInputType) => {
 
   return (
     <div>
-      <Input
+      <TextField
         value={newTaskTitle}
         onChange={onNewTitleChange}
         onKeyDown={onPressKeyHandler}
-        id="outlined-basic" color="secondary"/>
-      <Button onClick={addNewTask} color='secondary' variant="contained" size="small">+</Button>
-      {error && <div className="errorMessage">{error}</div>}
+        error={!!error}
+        helperText={error}
+        variant="standard"
+        color="secondary" label='Type value'/>
+      <IconButton onClick={addNewTask} color='secondary' size="small" className="addButton"><AddToPhotos/></IconButton>
     </div>
   )
 }

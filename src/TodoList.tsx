@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Grid } from "@mui/material";
+import {Button, Checkbox} from "@mui/material";
 import React, { ChangeEvent } from "react";
 import { FilterValuesType } from "./App";
 import { EditableSpan } from "./EditableSpan";
@@ -46,9 +46,9 @@ export function TodoList(props: TitleProps) {
     props.changeTodolistTitle(title, props.tId);
   };
   return (
-    <div className="todo">
+    <div>
       <div>
-        <h3 className="title">
+        <h3>
           <EditableSpan
             title={props.title}
             changeTitleValue={changeTodolistTitleHandler}
@@ -58,7 +58,7 @@ export function TodoList(props: TitleProps) {
           </Button>
         </h3>
         <SuperInput addItem={addTask} />
-        <ul className="listblock">
+        <ul>
           {props.tasks.map((t) => {
             const onClickHandler = () => props.removeTask(t.id, props.tId);
             const onChangeTypeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +70,7 @@ export function TodoList(props: TitleProps) {
             return (
               <li
                 key={t.id}
-                className={"list" + (t.isDone ? " " + "is-done" : "")}
+                className={t.isDone ? `list is-done` : "list"}
               >
                 <Checkbox
                   color="secondary"
