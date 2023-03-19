@@ -17,7 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 export type FilterValuesType = "All" | "Done" | "Active";
 
-type TodolistType = {
+export type TodolistType = {
   id: string;
   title: string;
   filter: FilterValuesType;
