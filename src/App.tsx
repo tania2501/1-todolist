@@ -27,7 +27,7 @@ type TaskType = {
   title: string;
   isDone: boolean;
 };
-type MainTasksType = {
+export type MainTasksType = {
   [key: string]: TaskType[];
 };
 
