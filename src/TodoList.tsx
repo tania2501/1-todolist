@@ -15,10 +15,10 @@ export type TasksType = {
 type TitleProps = {
   title: string;
   tasks: Array<TasksType>;
-  removeTask: (id: string, todolistId: string) => void;
+  removeTask: (todolistId: string, id: string) => void;
   changeFilter: (value: FilterValuesType, tId: string) => void;
   addTasks: (title: string, todolistId: string) => void;
-  changeStatus: (taskId: string, isDone: boolean, todolistId: string) => void;
+  changeStatus: (todolistId: string, taskId: string, isDone: boolean) => void;
   filter: FilterValuesType;
   tId: string;
   removeTodolist: (todolistId: string) => void;
@@ -46,7 +46,9 @@ export function TodoList(props: TitleProps) {
     props.changeTodolistTitle(title, props.tId);
   };
   return (
+   
     <div>
+      
       <div>
         <h3>
           <EditableSpan
@@ -59,10 +61,10 @@ export function TodoList(props: TitleProps) {
         </h3>
         <SuperInput addItem={addTask} />
         <ul>
-          {props.tasks.map((t) => {
+          {props.tasks.map((t) => {                                                                                   
             const onClickHandler = () => props.removeTask(t.id, props.tId);
             const onChangeTypeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-              props.changeStatus(t.id, e.currentTarget.checked, props.tId);
+              props.changeStatus(props.tId, t.id, e.currentTarget.checked);
             };
             const onChangeTitleHandler = (newTitle: string) => {
               props.changeTitleValue(t.id, newTitle, props.tId);

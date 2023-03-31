@@ -63,9 +63,11 @@ export const taskReducer = (state: MainTasksType, action: ActionType): MainTasks
       return stateCopy
     }
     case 'ADD_TODOLIST': {
-      const stateCopy = {...state}
-      stateCopy[action.idTodo] = []
-      return stateCopy
+      
+      const stateCopy = {...state};
+      stateCopy[action.idTodo] = [];
+     
+      return stateCopy;
     }
     case 'REMOVE_TODOLIST': {
       const stateCopy = {...state};
