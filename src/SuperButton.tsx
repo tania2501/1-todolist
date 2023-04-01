@@ -1,6 +1,5 @@
-import { Button } from '@mui/material';
-import React, { useState } from 'react';
-import { FilterValuesType } from './App';
+import React from 'react';
+import { FilterValuesType } from './AppWithRedux';
 
 type ButtonType = {
   title: string

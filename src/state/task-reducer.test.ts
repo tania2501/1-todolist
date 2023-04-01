@@ -1,6 +1,6 @@
 import { addTodoAC, removeTodoAC } from './todolists-reducer';
 import { v1 } from "uuid";
-import { MainTasksType } from "../App";
+import { MainTasksType } from "../AppWithRedux";
 import { addTaskAC, changeTasksStatusAC, changeTasksTitleAC, removeTasksAC, taskReducer } from "./task-reducer";
 
 test('correct task shoud be added', () => {
