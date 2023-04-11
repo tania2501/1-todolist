@@ -7,7 +7,7 @@ type ButtonType = {
   filterType: FilterValuesType
 }
 
-export const SuperButton = (props: ButtonType) => {
+export const SuperButton = React.memo((props: ButtonType) => {
   
   return (
     <div>
@@ -15,4 +15,4 @@ export const SuperButton = (props: ButtonType) => {
         onClick={props.onclick} className={props.filterType === props.title ? 'active-filter' : 'superButton'}> {props.title}</button>
     </div>
   )
-}
+})

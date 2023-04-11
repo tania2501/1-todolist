@@ -6,12 +6,12 @@ type SuperInputType = {
   addItem: (title: string) => void;
 }
 
-export const SuperInput = (props: SuperInputType) => {
+export const SuperInput = React.memo((props: SuperInputType) => {
+
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
   const [error, setError]= useState<string | null>(null);
 
   const onNewTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setError(null);
     setNewTaskTitle(e.currentTarget.value);
   };
   const addNewTask = () => {
@@ -23,8 +23,10 @@ export const SuperInput = (props: SuperInputType) => {
     }
   };
   const onPressKeyHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (error !== null) {
+       setError(null);
+    }
     if (e.key === 'Enter') {
-      setError(null);
       props.addItem(newTaskTitle);
       setNewTaskTitle("");
     }
@@ -43,4 +45,4 @@ export const SuperInput = (props: SuperInputType) => {
       <IconButton onClick={addNewTask} color='secondary' size="small" className="addButton"><AddToPhotos/></IconButton>
     </div>
   )
-}
+});
