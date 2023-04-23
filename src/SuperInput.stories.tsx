@@ -1,22 +1,34 @@
-import { IconButton, TextField } from "@mui/material";
-import React, { ChangeEvent, useState, KeyboardEvent } from "react";
-import { AddToPhotos } from "@mui/icons-material";
+import type { Meta, StoryObj } from '@storybook/react';
+import { SuperInput, SuperInputType } from "./SuperInput";
+import { ChangeEvent, useState, KeyboardEvent } from 'react';
+import { IconButton, TextField } from '@mui/material';
+import { AddToPhotos } from '@mui/icons-material';
+import { action } from '@storybook/addon-actions';
 
-export type SuperInputType = {
-  addItem: (title: string) => void;
-}
+const meta: Meta<typeof SuperInput> = {
+  title: 'Todolist/SuperInput',
+  component: SuperInput,
+  tags: ['autodocs'],
+  args: {
+    addItem: action('type text')
+  },
+};
 
-export const SuperInput = React.memo((props: SuperInputType) => {
+export default meta;
+type Story = StoryObj<typeof SuperInput>;
 
+export const SuperInputBase: Story = {} 
+
+export const SuperInputError = (args: SuperInputType) => {
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
-  const [error, setError]= useState<string | null>(null);
+  const [error, setError]= useState<string | null>('Field is required!');
 
   const onNewTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTaskTitle(e.currentTarget.value);
   };
   const addNewTask = () => {
     if (newTaskTitle.trim() !== "") {
-      props.addItem(newTaskTitle.trim());
+      args.addItem(newTaskTitle.trim());
     setNewTaskTitle("");
     } else {
       setError('Field is required!')
@@ -27,7 +39,7 @@ export const SuperInput = React.memo((props: SuperInputType) => {
        setError(null);
     }
     if (e.key === 'Enter') {
-      props.addItem(newTaskTitle);
+      args.addItem(newTaskTitle);
       setNewTaskTitle("");
     }
   };
@@ -45,4 +57,4 @@ export const SuperInput = React.memo((props: SuperInputType) => {
       <IconButton onClick={addNewTask} color='secondary' size="small" className="addButton"><AddToPhotos/></IconButton>
     </div>
   )
-});
+}
