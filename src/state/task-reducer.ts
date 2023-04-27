@@ -1,7 +1,7 @@
 import { v1 } from 'uuid';
-import { MainTasksType } from './../AppWithRedux';
 import { AddTodolistType, RemoveTodolistType } from './todolists-reducer';
 import { Reducer } from 'redux';
+import { TaskType } from '../api/todolists-api';
 
 
 const ADD_TASK = 'ADD-TASK';
@@ -18,7 +18,7 @@ type ChangeStatus = {
   type: 'CHANGE-STATUS'
   idTodo: string
   idTask: string
-  isDone: boolean
+  completed: boolean
 }
 type AddTaskType = {
   type: 'ADD-TASK'
@@ -31,24 +31,35 @@ type RemoveTaskType = {
   idTask: string
 }
 type ActionType = AddTaskType | RemoveTaskType | ChangeStatus | ChangeTitle | AddTodolistType | RemoveTodolistType
+
 export const todolist1 = v1();
 export const todolist2 = v1();
-const initialState = {
+const initialState: MainTasksType = {
   [todolist1]: [
-    { id: v1(), title: "HTML&CSS", isDone: true },
-    { id: v1(), title: "JS", isDone: true },
-    { id: v1(), title: "ReactJS", isDone: false },
+    { description: '', title: 'HTML&CSS', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+    { description: '', title: 'JS"', completed: false, status: 1, priority: 2,
+      startDate: '', deadline: '', id: v1(), todoListId: '', order: 3,
+      addedDate: ''},
   ],
   [todolist2]: [
-    { id: v1(), title: "Book", isDone: false },
-    { id: v1(), title: "Milk", isDone: true },
+    { description: '', title: 'Book', completed: true, status: 1, priority: 2,
+      startDate: '', deadline: '', id: v1(), todoListId: '', order: 3,
+      addedDate: ''},
+    { description: '', title: 'Milk', completed: false, status: 1, priority: 2,
+      startDate: '', deadline: '', id: v1(), todoListId: '', order: 3,
+      addedDate: ''}
   ],
 }
-export const taskReducer: Reducer<MainTasksType, ActionType> = (state = initialState, action) => {
+
+export type MainTasksType = {
+  [key: string]: TaskType[];
+};
+export const taskReducer: Reducer<MainTasksType, ActionType> = (state = initialState, action): MainTasksType => {
   switch (action.type) {
     case ADD_TASK: {
       const stateCopy = {...state}
-      const task = { id: v1(), title: action.title, isDone: false,}
+      const task = { id: v1(), description: '',  title: action.title, completed: false, status: 0, priority: 0, startDate: '', deadline: '', todoListId: '', order: 3,
+      addedDate: ''}
       stateCopy[action.id] = [task, ...state[action.id]]
       return stateCopy;
     };
@@ -62,7 +73,7 @@ export const taskReducer: Reducer<MainTasksType, ActionType> = (state = initialS
     case CHANGE_STATUS: {
       const tasks = state[action.idTodo].map( t => {
         if (t.id === action.idTask) {
-          return {...t, isDone: action.isDone}
+          return {...t, completed: action.completed}
         }
         return t;
       })
@@ -98,8 +109,8 @@ export const addTaskAC = (title: string, id: string): AddTaskType => {
 export const removeTasksAC = (idTodo: string, idTask: string): RemoveTaskType => {
   return {type: 'REMOVE-TASK', idTodo, idTask} 
 }
-export const changeTasksStatusAC = (idTodo: string, idTask: string, isDone: boolean): ChangeStatus => {
-  return {type: 'CHANGE-STATUS', idTodo, idTask, isDone} 
+export const changeTasksStatusAC = (idTodo: string, idTask: string, completed: boolean): ChangeStatus => {
+  return {type: 'CHANGE-STATUS', idTodo, idTask, completed} 
 }
 export const changeTasksTitleAC = (idTodo: string, idTask: string, title: string): ChangeTitle => {
   return {type: 'CHANGE-TITLE', idTodo, idTask, title} 

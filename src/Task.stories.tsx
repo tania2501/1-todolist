@@ -7,7 +7,7 @@ const meta: Meta<typeof Task> = {
   component: Task,
   tags: ['autodocs'],
   args: {
-    task:  { id: '1', title: "HTML&CSS", isDone: true },
+    task:  {  description: '', title: 'HTML&CSS', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: '1', todoListId: '', order: 3, addedDate: ''},
     tId: 'gbvgb5',
     changeStatus: action('change task status'),
     removeTask: action('remove task'),
@@ -26,6 +26,6 @@ export const TaskIsDone = {
 
 export const TaskIsActive = {
   args: {
-    task:  { id: '1', title: "HTML&CSS", isDone: false },
+    task:  { id: '1', title: "HTML&CSS", completed: false },
   }
 }

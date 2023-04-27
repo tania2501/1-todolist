@@ -1,6 +1,5 @@
 import { Button } from "@mui/material";
 import React, { useCallback } from "react";
-import { FilterValuesType } from "./AppWithRedux";
 import { EditableSpan } from "./EditableSpan";
 import { SuperInput } from "./SuperInput";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -14,12 +13,10 @@ import {
 } from "./state/task-reducer";
 import { Task } from "./Task";
 import { SuperButton } from "./SuperButton";
+import { FilterValuesType } from "./state/todolists-reducer";
+import { TaskType } from "./api/todolists-api";
 
-export type TasksType = {
-  id: string;
-  title: string;
-  isDone: boolean;
-};
+
 type TitleProps = {
   title: string;
   changeFilter: (value: FilterValuesType, tId: string) => void;
@@ -30,7 +27,7 @@ type TitleProps = {
 };
 
 export const TodoList = React.memo((props: TitleProps) => {
-  const tasks = useSelector<AppRootState, TasksType[]>(
+  const tasks = useSelector<AppRootState, TaskType[]>(
     (state) => state.tasks[props.tId]
   );
   const dispatch = useDispatch();
@@ -80,10 +77,10 @@ export const TodoList = React.memo((props: TitleProps) => {
   );
   let taskForTodoList = tasks;
   if (props.filter === "Done") {
-    taskForTodoList = taskForTodoList.filter((t) => t.isDone === true);
+    taskForTodoList = taskForTodoList.filter((t) => t.completed === true);
   }
   if (props.filter === "Active") {
-    taskForTodoList = taskForTodoList.filter((t) => t.isDone === false);
+    taskForTodoList = taskForTodoList.filter((t) => t.completed === false);
   }
   return (
     <div>

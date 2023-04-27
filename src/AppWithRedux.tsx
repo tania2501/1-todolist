@@ -13,6 +13,8 @@ import { SuperInput } from "./SuperInput";
 import { TodoList } from "./TodoList";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
+  FilterValuesType,
+  InitialStateTodoListType,
   addTodoAC,
   changeFilterTodoAC,
   changeTitleTodoAC,
@@ -23,25 +25,9 @@ import { useSelector } from "react-redux";
 import { AppRootState } from "./state/store";
 import { useCallback } from "react";
 
-export type FilterValuesType = "All" | "Done" | "Active";
-
-export type TodolistType = {
-  id: string;
-  title: string;
-  filter: FilterValuesType;
-};
-type TaskType = {
-  id: string;
-  title: string;
-  isDone: boolean;
-};
-export type MainTasksType = {
-  [key: string]: TaskType[];
-};
-
 function AppWithRedux() {
   const dispatch = useDispatch();
-  const todolist = useSelector<AppRootState, TodolistType[]>(
+  const todolist = useSelector<AppRootState, InitialStateTodoListType[]>(
     (state) => state.todolists
   );
 

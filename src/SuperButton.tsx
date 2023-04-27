@@ -1,5 +1,6 @@
 import React from 'react';
-import { FilterValuesType } from './AppWithRedux';
+import { FilterValuesType } from './state/todolists-reducer';
+
 
 type ButtonType = {
   title: string

@@ -1,7 +1,6 @@
 import { addTodoAC, removeTodoAC } from './todolists-reducer';
 import { v1 } from "uuid";
-import { MainTasksType } from "../AppWithRedux";
-import { addTaskAC, changeTasksStatusAC, changeTasksTitleAC, removeTasksAC, taskReducer } from "./task-reducer";
+import { MainTasksType, addTaskAC, changeTasksStatusAC, changeTasksTitleAC, removeTasksAC, taskReducer } from "./task-reducer";
 
 test('correct task shoud be added', () => {
   let todolist1 = v1();
@@ -9,13 +8,13 @@ test('correct task shoud be added', () => {
 
   const startState: MainTasksType = {
     [todolist1]: [
-      { id: v1(), title: "HTML&CSS", isDone: true },
-      { id: v1(), title: "JS", isDone: true },
-      { id: v1(), title: "ReactJS", isDone: false },
+      {  description: '', title: 'HTML&CSS', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'JS', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'ReactJS', completed: false, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
     ],
     [todolist2]: [
-      { id: v1(), title: "Book", isDone: false },
-      { id: v1(), title: "Milk", isDone: true },
+      {  description: '', title: 'Book', completed: false, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'Milk', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
     ],
   }
   let newTitle = 'New Task'
@@ -31,13 +30,13 @@ test('correct tasks shoud be removed', () => {
 
   const startState: MainTasksType = {
     [todolist1]: [
-      { id: v1(), title: "HTML&CSS", isDone: true },
-      { id: v1(), title: "JS", isDone: true },
-      { id: v1(), title: "ReactJS", isDone: false },
+      {  description: '', title: 'HTML&CSS', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'JS', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'ReactJS', completed: false, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
     ],
     [todolist2]: [
-      { id: v1(), title: "Book", isDone: false },
-      { id: v1(), title: "Milk", isDone: true },
+      {  description: '', title: 'Book', completed: false, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'Milk', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
     ],
   }
 
@@ -52,20 +51,20 @@ test('correct tasks status shoud be changed', () => {
 
   const startState: MainTasksType = {
     [todolist1]: [
-      { id: v1(), title: "HTML&CSS", isDone: true },
-      { id: v1(), title: "JS", isDone: true },
-      { id: v1(), title: "ReactJS", isDone: false },
+      {  description: '', title: 'HTML&CSS', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'JS', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'ReactJS', completed: false, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
     ],
     [todolist2]: [
-      { id: v1(), title: "Book", isDone: false },
-      { id: v1(), title: "Milk", isDone: true },
+      {  description: '', title: 'Book', completed: false, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'Milk', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
     ],
   }
 
   const endState = taskReducer(startState, changeTasksStatusAC(todolist1, startState[todolist1][0].id, false))
 
   expect(endState[todolist1].length).toBe(3)
-  expect(endState[todolist1][0].isDone).toBe(false)
+  expect(endState[todolist1][0].completed).toBe(false)
 });
 test('correct tasks title shoud be changed', () => {
   let todolist1 = v1();
@@ -73,13 +72,13 @@ test('correct tasks title shoud be changed', () => {
 
   const startState: MainTasksType = {
     [todolist1]: [
-      { id: v1(), title: "HTML&CSS", isDone: true },
-      { id: v1(), title: "JS", isDone: true },
-      { id: v1(), title: "ReactJS", isDone: false },
+      {  description: '', title: 'HTML&CSS', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'JS', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'ReactJS', completed: false, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
     ],
     [todolist2]: [
-      { id: v1(), title: "Book", isDone: false },
-      { id: v1(), title: "Milk", isDone: true },
+      {  description: '', title: 'Book', completed: false, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'Milk', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
     ],
   }
   let newTitle = 'Hello'
@@ -95,13 +94,13 @@ test('new property with new array should be added when new todolist is added', (
 
   const startState: MainTasksType = {
     [todolist1]: [
-      { id: v1(), title: "HTML&CSS", isDone: true },
-      { id: v1(), title: "JS", isDone: true },
-      { id: v1(), title: "ReactJS", isDone: false },
+      {  description: '', title: 'HTML&CSS', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'JS', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'ReactJS', completed: false, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
     ],
     [todolist2]: [
-      { id: v1(), title: "Book", isDone: false },
-      { id: v1(), title: "Milk", isDone: true },
+      {  description: '', title: 'Book', completed: false, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'Milk', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
     ],
   }
   const action = addTodoAC('new')
@@ -123,13 +122,13 @@ test('property should be deleted', () => {
 
   const startState: MainTasksType = {
     [todolist1]: [
-      { id: v1(), title: "HTML&CSS", isDone: true },
-      { id: v1(), title: "JS", isDone: true },
-      { id: v1(), title: "ReactJS", isDone: false },
+      {  description: '', title: 'HTML&CSS', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'JS', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'ReactJS', completed: false, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
     ],
     [todolist2]: [
-      { id: v1(), title: "Book", isDone: false },
-      { id: v1(), title: "Milk", isDone: true },
+      {  description: '', title: 'Book', completed: false, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
+      {  description: '', title: 'Milk', completed: true, status: 1, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
     ],
   }
   const action = removeTodoAC(todolist2)
