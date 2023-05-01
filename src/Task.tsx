@@ -4,13 +4,13 @@ import { EditableSpan } from "./EditableSpan";
 
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import React from "react";
-import { TaskType } from "./api/todolists-api";
+import { TaskStatus, TaskType } from "./api/todolists-api";
 
 export type TaskPropsType = {
   task: TaskType;
   tId: string;
   changeTitle: (todolistId: string, taskId: string, title: string)=>void
-  changeStatus: (todolistId: string, taskId: string, isDone: boolean)=>void
+  changeStatus: (todolistId: string, taskId: string, statuse: TaskStatus)=>void
   removeTask: (todolistId: string, id: string)=>void
 };
 export const Task: React.FC<TaskPropsType> = React.memo((props) => {
@@ -19,7 +19,8 @@ export const Task: React.FC<TaskPropsType> = React.memo((props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.tId, props.task.id, props.removeTask]);
   const onChangeTypeHandler =useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    props.changeStatus(props.tId, props.task.id, e.currentTarget.checked)
+    let status = e.currentTarget.checked
+    props.changeStatus(props.tId, props.task.id, status ? TaskStatus.Completed : TaskStatus.New )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.tId, props.task.id, props.changeStatus]);
   const onChangeTitleHandler =useCallback((newTitle: string) => {
@@ -27,11 +28,11 @@ export const Task: React.FC<TaskPropsType> = React.memo((props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.tId, props.task.id, props.changeTitle]);
   return (
-    <li className={props.task.completed ? `list is-done` : "list"}>
+    <li className={props.task.status === TaskStatus.Completed ? `list is-done` : "list"}>
       <Checkbox
         color="secondary"
         onChange={onChangeTypeHandler}
-        checked={props.task.completed}
+        checked={props.task.status === TaskStatus.Completed}
         className="checkbox"
       />
 

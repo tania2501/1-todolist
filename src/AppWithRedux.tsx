@@ -15,38 +15,50 @@ import MenuIcon from "@mui/icons-material/Menu";
 import {
   FilterValuesType,
   InitialStateTodoListType,
-  addTodoAC,
   changeFilterTodoAC,
-  changeTitleTodoAC,
-  removeTodoAC,
+  createTodolists,
+  deleteTodolists,
+  getTodolists,
+  updateTodolistTitle,
 } from "./state/todolists-reducer";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { AppRootState } from "./state/store";
-import { useCallback } from "react";
+import { AppDispatch, AppRootState } from "./state/store";
+import { useCallback, useEffect } from "react";
 
 function AppWithRedux() {
-  const dispatch = useDispatch();
   const todolist = useSelector<AppRootState, InitialStateTodoListType[]>(
     (state) => state.todolists
   );
-
-  const changeFilter = useCallback((value: FilterValuesType, tId: string) => {
-    const action = changeFilterTodoAC(value, tId);
-    dispatch(action);
+  const dispatch: AppDispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getTodolists());
   }, [dispatch]);
-  const removeTodolist = useCallback((todolistId: string) => {
-    const action = removeTodoAC(todolistId);
-    dispatch(action);
-  }, [dispatch]);
-  const addTodolist = useCallback((title: string) => {
-    const action = addTodoAC(title);
-    dispatch(action);
-  }, [dispatch]);
-  const changeTodolistTitle = useCallback((title: string, todolistId: string) => {
-    const action = changeTitleTodoAC(title, todolistId);
-    dispatch(action);
-  }, [dispatch]);
+  const changeFilter = useCallback(
+    (value: FilterValuesType, tId: string) => {
+      const action = changeFilterTodoAC(value, tId);
+      dispatch(action);
+    },
+    [dispatch]
+  );
+  const removeTodolist = useCallback(
+    (todolistId: string) => {
+      dispatch(deleteTodolists(todolistId));
+    },
+    [dispatch]
+  );
+  const addTodolist = useCallback(
+    (title: string) => {
+      dispatch(createTodolists(title));
+    },
+    [dispatch]
+  );
+  const changeTodolistTitle = useCallback(
+    (title: string, todolistId: string) => {
+      dispatch(updateTodolistTitle(title, todolistId));
+    },
+    [dispatch]
+  );
 
   return (
     <div className="App">

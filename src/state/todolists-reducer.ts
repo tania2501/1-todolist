@@ -1,7 +1,7 @@
-import { v1 } from "uuid";
 import { Reducer } from "redux";
-import { todolist1, todolist2 } from "./task-reducer";
-import { TodolistsType } from "../api/todolists-api";
+import { TodolistsAPI, TodolistsType } from "../api/todolists-api";
+import { ThunkAction } from "@reduxjs/toolkit";
+import { AppRootState } from "./store";
 
 export type FilterValuesType = "All" | "Done" | "Active";
 type ChangeTitleType ={
@@ -15,21 +15,23 @@ export type RemoveTodolistType = {
 }
 export type AddTodolistType = {
   type: 'ADD_TODOLIST'
-  title: string
-  idTodo: string
+  todolist: TodolistsType
 }
 type ChangeFilterType = {
   type: 'CHANGE_TODOLIST_FILTER'
   tId: string
   filter: FilterValuesType
 }
-type ActionType = ChangeFilterType | RemoveTodolistType | ChangeTitleType | AddTodolistType
+export type SetTodolistsType = {
+  type: 'SET-TODOLISTS'
+  todolists: TodolistsType[]
+}
+type ActionType = ChangeFilterType | RemoveTodolistType | ChangeTitleType | AddTodolistType | SetTodolistsType
 export type InitialStateTodoListType = TodolistsType & {
   filter: FilterValuesType
 }
 const initialState: InitialStateTodoListType[]  = [
-  { id: todolist1, title: "What to learn", addedDate: '', order: 1, filter: "All" },
-  { id: todolist2, title: "What to buy", addedDate: '', order: 2, filter: "All" },
+
 ];
 export const todolistReducer: Reducer<InitialStateTodoListType[], ActionType> = (state = initialState , action): InitialStateTodoListType[] => {
   switch (action.type) {
@@ -37,15 +39,9 @@ export const todolistReducer: Reducer<InitialStateTodoListType[], ActionType> = 
       return [...state].filter((tl) => tl.id !== action.tId)
     }
     case 'ADD_TODOLIST': {
-      return [
-         {
-          id: action.idTodo,
-          title: action.title,
-          addedDate: '',
-          order: 0,
-          filter: 'All'
-        }, ...state
-      ]
+      const newTodolist: InitialStateTodoListType = {...action.todolist, filter: 'All'}
+      return [newTodolist, ...state]
+      
     }
     case 'CHANGE_TODOLIST_TITLE': {
       const stateCopy = state.map( (t)=> {
@@ -65,6 +61,12 @@ export const todolistReducer: Reducer<InitialStateTodoListType[], ActionType> = 
       })
       return stateCopy;
     }
+    case 'SET-TODOLISTS': {
+      return action.todolists.map( (tl) => {
+        return {...tl,
+        filter: 'All'}
+      })
+    }
     default:
       return state;
   }
@@ -72,12 +74,43 @@ export const todolistReducer: Reducer<InitialStateTodoListType[], ActionType> = 
 export const removeTodoAC = (tId: string): RemoveTodolistType => {
   return {type: 'REMOVE_TODOLIST', tId}
 }
-export const addTodoAC = (title: string): AddTodolistType => {
-  return {type: 'ADD_TODOLIST', title, idTodo: v1()}
+export const addTodoAC = (todolist: TodolistsType): AddTodolistType => {
+  return {type: 'ADD_TODOLIST', todolist}
 }
 export const changeTitleTodoAC = (title: string, tId: string): ChangeTitleType => {
   return {type: 'CHANGE_TODOLIST_TITLE', title, tId}
 }
 export const changeFilterTodoAC = (filter: FilterValuesType, tId: string): ChangeFilterType => {
   return {type: 'CHANGE_TODOLIST_FILTER', filter, tId}
+}
+export const setTodoAC = (todolists: TodolistsType[]): SetTodolistsType => {
+  return {type: 'SET-TODOLISTS', todolists}
+}
+export const getTodolists = (): ThunkAction<Promise<void>, AppRootState, unknown, ActionType> => {
+  return async (dispatch) => {
+    TodolistsAPI.getTodolists().then((data) => {
+      dispatch(setTodoAC(data.data));
+    });
+  }
+}
+export const deleteTodolists = (id: string): ThunkAction<Promise<void>, AppRootState, unknown, ActionType> => {
+  return async (dispatch) => {
+    TodolistsAPI.deleteTodolist(id).then((data) => {
+      dispatch(removeTodoAC(id));
+    });
+  }
+}
+export const createTodolists = (title: string): ThunkAction<Promise<void>, AppRootState, unknown, ActionType> => {
+  return async (dispatch) => {
+    TodolistsAPI.createTodolist(title).then((data) => {
+      dispatch(addTodoAC(data.data.data.item));
+    });
+  }
+}
+export const updateTodolistTitle = (title: string, id: string): ThunkAction<Promise<void>, AppRootState, unknown, ActionType> => {
+  return async (dispatch) => {
+    TodolistsAPI.updateTitle(title, id).then((data) => {
+      dispatch(changeTitleTodoAC(title, id));
+    });
+  }
 }

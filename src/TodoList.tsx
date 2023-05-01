@@ -1,20 +1,21 @@
 import { Button } from "@mui/material";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { EditableSpan } from "./EditableSpan";
 import { SuperInput } from "./SuperInput";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
-import { AppRootState } from "./state/store";
+import { AppDispatch, AppRootState } from "./state/store";
 import {
-  addTaskAC,
-  changeTasksStatusAC,
-  changeTasksTitleAC,
-  removeTasksAC,
+  changeTaskStatus,
+  createTask,
+  deleteTask,
+  getTasks,
+  updateTaskTitle,
 } from "./state/task-reducer";
 import { Task } from "./Task";
 import { SuperButton } from "./SuperButton";
 import { FilterValuesType } from "./state/todolists-reducer";
-import { TaskType } from "./api/todolists-api";
+import { TaskStatus, TaskType } from "./api/todolists-api";
 
 
 type TitleProps = {
@@ -27,10 +28,13 @@ type TitleProps = {
 };
 
 export const TodoList = React.memo((props: TitleProps) => {
+  const dispatch: AppDispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getTasks(props.tId));
+  }, [dispatch, props.tId]);
   const tasks = useSelector<AppRootState, TaskType[]>(
     (state) => state.tasks[props.tId]
-  );
-  const dispatch = useDispatch();
+  )
 
   const onAllClick = useCallback(() => {
     props.changeFilter("All", props.tId);
@@ -48,25 +52,22 @@ export const TodoList = React.memo((props: TitleProps) => {
     props.removeTodolist(props.tId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.removeTodolist, props.tId]);
-  const removeTask = (todolistId: string, id: string) => {
-    const action = removeTasksAC(todolistId, id);
-    dispatch(action);
+  const removeTasks = (todolistId: string, id: string) => {
+    dispatch(deleteTask(todolistId, id));
   };
   const changeStatus = (
     todolistId: string,
     taskId: string,
-    isDone: boolean
+    status: TaskStatus
   ) => {
-    const action = changeTasksStatusAC(todolistId, taskId, isDone);
-    dispatch(action);
+    dispatch(changeTaskStatus(todolistId, taskId, status));
   };
   const changeTitleValue = (
     todolistId: string,
     taskId: string,
     title: string
   ) => {
-    const action = changeTasksTitleAC(todolistId, taskId, title);
-    dispatch(action);
+    dispatch(updateTaskTitle(todolistId, taskId, title));
   };
   const changeTodolistTitleHandler = useCallback(
     (title: string) => {
@@ -77,10 +78,10 @@ export const TodoList = React.memo((props: TitleProps) => {
   );
   let taskForTodoList = tasks;
   if (props.filter === "Done") {
-    taskForTodoList = taskForTodoList.filter((t) => t.completed === true);
+    taskForTodoList = taskForTodoList.filter((t) => t.status === TaskStatus.Completed);
   }
   if (props.filter === "Active") {
-    taskForTodoList = taskForTodoList.filter((t) => t.completed === false);
+    taskForTodoList = taskForTodoList.filter((t) => t.status === TaskStatus.New);
   }
   return (
     <div>
@@ -97,14 +98,14 @@ export const TodoList = React.memo((props: TitleProps) => {
         <SuperInput
           addItem={useCallback(
             (title) => {
-              dispatch(addTaskAC(title, props.tId));
+              dispatch(createTask(title, props.tId));
             },
             [dispatch, props.tId]
           )}
         />
         <ul>
           {taskForTodoList.map((t) => (
-            <Task task={t} tId={props.tId} key={t.id} changeStatus={changeStatus} changeTitle={changeTitleValue} removeTask={removeTask}/>
+            <Task task={t} tId={props.tId} key={t.id} changeStatus={changeStatus} changeTitle={changeTitleValue} removeTask={removeTasks}/>
           ))}
         </ul>
         <div className="filterButton">

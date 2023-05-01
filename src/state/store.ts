@@ -1,9 +1,12 @@
+
+import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { todolistReducer } from "./todolists-reducer";
 import { taskReducer } from "./task-reducer";
 
 export type AppRootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = ThunkDispatch<AppRootState, unknown, AnyAction>
+
 
 const rootReducer = combineReducers({
   todolists: todolistReducer,
