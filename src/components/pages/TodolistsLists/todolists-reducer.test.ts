@@ -1,7 +1,8 @@
-import { todolist1, todolist2 } from "./task-reducer";
 import { FilterValuesType, InitialStateTodoListType, addTodoAC, changeFilterTodoAC, changeTitleTodoAC, removeTodoAC, setTodoAC, todolistReducer } from "./todolists-reducer";
 import { v1 } from "uuid";
 
+const todolist1 = v1()
+const todolist2 = v1()
 let startState: InitialStateTodoListType[] = [];
 beforeEach(() => {
     startState = [

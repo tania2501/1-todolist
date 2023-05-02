@@ -18,11 +18,7 @@ const meta: Meta<typeof Task> = {
 export default meta;
 type Story = StoryObj<typeof Task>;
 
-export const TaskIsDone = {
-  args: {
-
-  }
-}
+export const TaskIsDone = {}
 
 export const TaskIsActive = {
   args: {

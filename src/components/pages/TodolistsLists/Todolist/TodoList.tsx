@@ -1,21 +1,21 @@
 import { Button } from "@mui/material";
 import React, { useCallback, useEffect } from "react";
-import { EditableSpan } from "./EditableSpan";
-import { SuperInput } from "./SuperInput";
+import { EditableSpan } from "../../../EditableSpan/EditableSpan";
+import { SuperInput } from "../../../SuperInput/SuperInput";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, AppRootState } from "./state/store";
+import { AppDispatch, AppRootState } from "../../../../app/store";
 import {
   changeTaskStatus,
   createTask,
   deleteTask,
   getTasks,
   updateTaskTitle,
-} from "./state/task-reducer";
-import { Task } from "./Task";
-import { SuperButton } from "./SuperButton";
-import { FilterValuesType } from "./state/todolists-reducer";
-import { TaskStatus, TaskType } from "./api/todolists-api";
+} from "../Task/task-reducer";
+import { Task } from "../Task/Task";
+import { SuperButton } from "../../../SuperButton/SuperButton";
+import { FilterValuesType } from "../todolists-reducer";
+import { TaskStatus, TaskType } from "../../../../api/todolists-api";
 
 
 type TitleProps = {

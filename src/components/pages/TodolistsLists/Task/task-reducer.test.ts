@@ -1,9 +1,11 @@
-import { addTodoAC, removeTodoAC, setTodoAC } from './todolists-reducer';
+import { addTodoAC, removeTodoAC, setTodoAC } from '../todolists-reducer';
 import { v1 } from "uuid";
-import { MainTasksType, addTaskAC, changeTasksStatusAC, changeTasksTitleAC, removeTasksAC, setTaskAC, taskReducer, todolist1, todolist2 } from "./task-reducer";
-import { TaskStatus, TaskType } from '../api/todolists-api';
+import { MainTasksType, addTaskAC, changeTasksStatusAC, changeTasksTitleAC, removeTasksAC, setTaskAC, taskReducer } from "./task-reducer";
+import { TaskStatus, TaskType } from '../../../../api/todolists-api';
 
 let startState: MainTasksType = {};
+const todolist1 = v1()
+const todolist2 = v1()
 beforeEach(() => {
     startState = {
       [todolist1]: [
@@ -16,6 +18,7 @@ beforeEach(() => {
         {  description: '', title: 'Milk', completed: true, status: TaskStatus.Completed, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: '', order: 3, addedDate: ''},
       ],
     };
+    
 });
 test('correct task shoud be added', () => {
   const task: TaskType = {  description: '', title: 'aaaaa', completed: true, status: TaskStatus.New, priority: 2, startDate: '', deadline: '', id: v1(), todoListId: todolist2, order: 3, addedDate: ''}
