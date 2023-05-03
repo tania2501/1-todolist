@@ -1,17 +1,14 @@
 import { Grid, Paper } from '@mui/material';
 import { useCallback, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppRootState, AppDispatch } from '../../app/store';
 import { SuperInput } from '../SuperInput/SuperInput';
 import { TodoList } from './TodolistsLists/Todolist/TodoList';
-import { InitialStateTodoListType, getTodolists, FilterValuesType, changeFilterTodoAC, deleteTodolists, createTodolists, updateTodolistTitle } from './TodolistsLists/todolists-reducer';
+import { getTodolists, FilterValuesType, changeFilterTodoAC, deleteTodolists, createTodolists, updateTodolistTitle } from './TodolistsLists/todolists-reducer';
+import { useAppDispatch, useAppSelector } from '../../app/app/hooks/appHooks';
 
 
 export const TodolistsList = () => {
-  const todolist = useSelector<AppRootState, InitialStateTodoListType[]>(
-    (state) => state.todolists
-  );
-  const dispatch: AppDispatch = useDispatch();
+  const todolist = useAppSelector(state => state.todolists);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getTodolists());
   }, [dispatch]);

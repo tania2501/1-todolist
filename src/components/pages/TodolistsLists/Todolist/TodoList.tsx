@@ -3,8 +3,6 @@ import React, { useCallback, useEffect } from "react";
 import { EditableSpan } from "../../../EditableSpan/EditableSpan";
 import { SuperInput } from "../../../SuperInput/SuperInput";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, AppRootState } from "../../../../app/store";
 import {
   changeTaskStatus,
   createTask,
@@ -15,7 +13,8 @@ import {
 import { Task } from "../Task/Task";
 import { SuperButton } from "../../../SuperButton/SuperButton";
 import { FilterValuesType } from "../todolists-reducer";
-import { TaskStatus, TaskType } from "../../../../api/todolists-api";
+import { TaskStatus } from "../../../../api/todolists-api";
+import { useAppDispatch, useAppSelector } from "../../../../app/app/hooks/appHooks";
 
 
 type TitleProps = {
@@ -28,13 +27,11 @@ type TitleProps = {
 };
 
 export const TodoList = React.memo((props: TitleProps) => {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getTasks(props.tId));
   }, [dispatch, props.tId]);
-  const tasks = useSelector<AppRootState, TaskType[]>(
-    (state) => state.tasks[props.tId]
-  )
+  const tasks = useAppSelector(state => state.tasks[props.tId])
 
   const onAllClick = useCallback(() => {
     props.changeFilter("All", props.tId);
@@ -55,27 +52,16 @@ export const TodoList = React.memo((props: TitleProps) => {
   const removeTasks = (todolistId: string, id: string) => {
     dispatch(deleteTask(todolistId, id));
   };
-  const changeStatus = (
-    todolistId: string,
-    taskId: string,
-    status: TaskStatus
-  ) => {
+  const changeStatus = (todolistId: string, taskId: string, status: TaskStatus) => {
     dispatch(changeTaskStatus(todolistId, taskId, status));
   };
-  const changeTitleValue = (
-    todolistId: string,
-    taskId: string,
-    title: string
-  ) => {
+  const changeTitleValue = (todolistId: string, taskId: string, title: string) => {
     dispatch(updateTaskTitle(todolistId, taskId, title));
   };
-  const changeTodolistTitleHandler = useCallback(
-    (title: string) => {
-      props.changeTodolistTitle(title, props.tId);
-    },
+  const changeTodolistTitleHandler = useCallback((title: string) => {
+    props.changeTodolistTitle(title, props.tId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [props.changeTodolistTitle, props.tId]
-  );
+  }, [props.changeTodolistTitle, props.tId]);
   let taskForTodoList = tasks;
   if (props.filter === "Done") {
     taskForTodoList = taskForTodoList.filter((t) => t.status === TaskStatus.Completed);
