@@ -3,14 +3,19 @@ import {
   Button,
   Container,
   IconButton,
+  LinearProgress,
   Toolbar,
   Typography,
 } from "@mui/material";
 import "./App.css";
 import MenuIcon from "@mui/icons-material/Menu";
-import { TodolistsList } from "../components/pages/TodolistsList";
+import { TodolistsList } from "../pages/TodolistsList";
+import { ErrorBar } from "../components/ErrorBar/ErrorBar";
+import { useAppSelector } from "./app/hooks/appHooks";
+
 
 function AppWithRedux() {
+  const status = useAppSelector(state => state.app.status)
   return (
     <div className="App">
       <AppBar position="static" color="secondary">
@@ -30,9 +35,11 @@ function AppWithRedux() {
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
+      {status === 'loading' && <LinearProgress color="secondary" />}
       <Container fixed>
         <TodolistsList/>
       </Container>
+      <ErrorBar/>
     </div>
   );
 }

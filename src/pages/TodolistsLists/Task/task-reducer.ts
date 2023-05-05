@@ -1,7 +1,8 @@
 import { Reducer } from 'redux';
-import { TaskStatus, TaskType, TodolistsAPI, UpdateTaskModelType } from '../../../../api/todolists-api';
-import { ActionType } from '../../../../app/store';
 import { ADD_TODOLIST, REMOVE_TODOLIST, SET_TODOLISTS, ThunkType } from '../todolists-reducer';
+import { TaskType, TaskStatus, TodolistsAPI, UpdateTaskModelType } from '../../../api/todolists-api';
+import { ActionType } from '../../../app/store';
+import { setErrorAC, setStatusAC } from '../../../app/app-reducer';
 //actions type
 const ADD_TASK = 'ADD-TASK';
 const REMOVE_TASK = 'REMOVE-TASK';
@@ -46,18 +47,33 @@ export const changeTasksTitleAC = (idTodo: string, idTask: string, title: string
 export const setTaskAC = (tasks: TaskType[], todolistId: string) => ({ type: SET_TASKS, tasks, todolistId } as const)
 //thunks
 export const getTasks = (tId: string): ThunkType => async dispatch => {
+  dispatch(setStatusAC('loading'))
   const res = await TodolistsAPI.getTasks(tId)
   dispatch(setTaskAC(res.data.items, tId));
+  dispatch(setStatusAC('succeeded'))
 }
 export const deleteTask = (tId: string, taskId: string): ThunkType => async dispatch => {
+  dispatch(setStatusAC('loading'))
   await TodolistsAPI.deleteTask(tId, taskId)
   dispatch(removeTasksAC(tId, taskId));
+  dispatch(setStatusAC('succeeded'))
 }
 export const createTask = (title: string, taskId: string): ThunkType => async dispatch => {
+  dispatch(setStatusAC('loading'))
   const res = await TodolistsAPI.createTask(title, taskId)
-  dispatch(addTaskAC(res.data.data.item));
+  if (res.data.resultCode === 0) {
+    dispatch(addTaskAC(res.data.data.item));
+  } else {
+    if(res.data.messages.length) {
+      dispatch(setErrorAC(res.data.messages[0]))
+    } else {
+      dispatch(setErrorAC('some error'))
+    }
+  }
+  dispatch(setStatusAC('succeeded'))
 }
 export const updateTaskTitle = (todoId: string, taskId: string, title: string): ThunkType => async (dispatch, getState) => {
+  dispatch(setStatusAC('loading'))
   const state = getState();
   const task = state.tasks[todoId].find(t => t.id === taskId)
   if (!task) {
@@ -67,8 +83,10 @@ export const updateTaskTitle = (todoId: string, taskId: string, title: string): 
   const model: UpdateTaskModelType = { ...task, title: title }
   await TodolistsAPI.updateTitleTask(todoId, taskId, model)
   dispatch(changeTasksTitleAC(todoId, taskId, title));
+  dispatch(setStatusAC('succeeded'))
 }
 export const changeTaskStatus = (todoId: string, taskId: string, status: TaskStatus): ThunkType => async (dispatch, getState) => {
+  dispatch(setStatusAC('loading'))
   const state = getState();
   const task = state.tasks[todoId].find(t => t.id === taskId)
   if (!task) {
@@ -78,6 +96,7 @@ export const changeTaskStatus = (todoId: string, taskId: string, status: TaskSta
   const model: UpdateTaskModelType = { ...task, status: status }
   await TodolistsAPI.updateStatus(todoId, taskId, model)
   dispatch(changeTasksStatusAC(todoId, taskId, status));
+  dispatch(setStatusAC('succeeded'))
 }
 //types
 export type MainTasksType = {

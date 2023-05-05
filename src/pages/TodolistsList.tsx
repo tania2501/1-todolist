@@ -1,9 +1,9 @@
 import { Grid, Paper } from '@mui/material';
 import { useCallback, useEffect } from 'react';
-import { SuperInput } from '../SuperInput/SuperInput';
 import { TodoList } from './TodolistsLists/Todolist/TodoList';
 import { getTodolists, FilterValuesType, changeFilterTodoAC, deleteTodolists, createTodolists, updateTodolistTitle } from './TodolistsLists/todolists-reducer';
-import { useAppDispatch, useAppSelector } from '../../app/app/hooks/appHooks';
+import { useAppSelector, useAppDispatch } from '../app/app/hooks/appHooks';
+import { SuperInput } from '../components/SuperInput/SuperInput';
 
 
 export const TodolistsList = () => {

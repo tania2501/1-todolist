@@ -6,8 +6,8 @@ const todolist2 = v1()
 let startState: InitialStateTodoListType[] = [];
 beforeEach(() => {
     startState = [
-      { id: todolist1, title: "What to learn", filter: "All", addedDate: '', order: 1 },
-      { id: todolist2, title: "What to buy", filter: "All", addedDate: '', order: 1 },
+      { id: todolist1, title: "What to learn", filter: "All", addedDate: '', order: 1 , entitiStatus: 'idle'},
+      { id: todolist2, title: "What to buy", filter: "All", addedDate: '', order: 1, entitiStatus: 'idle' },
     ]
 });
 test('correct todolist shoud be removed', () => {

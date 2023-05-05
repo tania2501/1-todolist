@@ -1,5 +1,6 @@
 import React from 'react';
-import { FilterValuesType } from '../pages/TodolistsLists/todolists-reducer';
+import { FilterValuesType } from '../../pages/TodolistsLists/todolists-reducer';
+
 
 
 type ButtonType = {

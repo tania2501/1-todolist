@@ -1,7 +1,5 @@
 import { Button } from "@mui/material";
 import React, { useCallback, useEffect } from "react";
-import { EditableSpan } from "../../../EditableSpan/EditableSpan";
-import { SuperInput } from "../../../SuperInput/SuperInput";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   changeTaskStatus,
@@ -11,11 +9,12 @@ import {
   updateTaskTitle,
 } from "../Task/task-reducer";
 import { Task } from "../Task/Task";
-import { SuperButton } from "../../../SuperButton/SuperButton";
+import { TaskStatus } from "../../../api/todolists-api";
+import { useAppDispatch, useAppSelector } from "../../../app/app/hooks/appHooks";
+import { EditableSpan } from "../../../components/EditableSpan/EditableSpan";
+import { SuperButton } from "../../../components/SuperButton/SuperButton";
+import { SuperInput } from "../../../components/SuperInput/SuperInput";
 import { FilterValuesType } from "../todolists-reducer";
-import { TaskStatus } from "../../../../api/todolists-api";
-import { useAppDispatch, useAppSelector } from "../../../../app/app/hooks/appHooks";
-
 
 type TitleProps = {
   title: string;

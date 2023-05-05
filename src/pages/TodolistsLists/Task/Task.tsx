@@ -1,9 +1,10 @@
 import { Checkbox, Button } from "@mui/material";
 import { ChangeEvent, useCallback } from "react";
-import { EditableSpan } from "../../../EditableSpan/EditableSpan";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import React from "react";
-import { TaskStatus, TaskType } from "../../../../api/todolists-api";
+import { TaskType, TaskStatus } from "../../../api/todolists-api";
+import { EditableSpan } from "../../../components/EditableSpan/EditableSpan";
+
 
 export type TaskPropsType = {
   task: TaskType;
