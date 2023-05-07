@@ -1,4 +1,4 @@
-import { addTodoAC, removeTodoAC, setTodoAC } from '../todolists-reducer';
+import { addTodoAC, removeTodoAC, setTodoAC } from '../Todolist/todolists-reducer';
 import { v1 } from "uuid";
 import { MainTasksType, addTaskAC, changeTasksStatusAC, changeTasksTitleAC, removeTasksAC, setTaskAC, taskReducer } from "./task-reducer";
 import { TaskStatus, TaskType } from '../../../api/todolists-api';

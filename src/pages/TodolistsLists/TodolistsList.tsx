@@ -1,9 +1,9 @@
 import { Grid, Paper } from '@mui/material';
 import React, { useCallback, useEffect } from 'react';
-import { TodoList } from './TodolistsLists/Todolist/TodoList';
-import { getTodolists, FilterValuesType, changeFilterTodoAC, deleteTodolists, createTodolists, updateTodolistTitle } from './TodolistsLists/todolists-reducer';
-import { useAppSelector, useAppDispatch } from '../app/app/hooks/appHooks';
-import { SuperInput } from '../components/SuperInput/SuperInput';
+import { TodoList } from './Todolist/TodoList';
+import { getTodolists, FilterValuesType, changeFilterTodoAC, deleteTodolists, createTodolists, updateTodolistTitle } from './Todolist/todolists-reducer';
+import { useAppSelector, useAppDispatch } from '../../app/app/hooks/appHooks';
+import { SuperInput } from '../../components/SuperInput/SuperInput';
 
 type PropsType = {
   demo?: boolean

@@ -1,9 +1,9 @@
 import { Reducer } from "redux";
 import { ThunkAction } from "@reduxjs/toolkit";
-import { TodolistsType, TodolistsAPI } from "../../api/todolists-api";
-import { ActionType, AppRootState } from "../../app/store";
-import { StatusType, setAppStatusAC } from "../../app/app-reducer";
-import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
+import { TodolistsType, TodolistsAPI } from "../../../api/todolists-api";
+import { ActionType, AppRootState } from "../../../app/store";
+import { StatusType, setAppStatusAC } from "../../../app/app-reducer";
+import { handleServerAppError, handleServerNetworkError } from "../../../utils/error-utils";
 
 //actions type
 export const REMOVE_TODOLIST = 'REMOVE_TODOLIST';

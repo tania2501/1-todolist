@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import "./App.css";
 import MenuIcon from "@mui/icons-material/Menu";
-import { TodolistsList } from "../pages/TodolistsList";
+import { TodolistsList } from "../pages/TodolistsLists/TodolistsList";
 import { ErrorBar } from "../components/ErrorBar/ErrorBar";
 import { useAppSelector } from "./app/hooks/appHooks";
 

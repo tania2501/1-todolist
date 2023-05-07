@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { ADD_TODOLIST, REMOVE_TODOLIST, SET_TODOLISTS, ThunkType } from '../todolists-reducer';
+import { ADD_TODOLIST, REMOVE_TODOLIST, SET_TODOLISTS, ThunkType } from '../Todolist/todolists-reducer';
 import { TaskType, TaskStatus, TodolistsAPI, UpdateTaskModelType } from '../../../api/todolists-api';
 import { ActionType } from '../../../app/store';
 import { setAppStatusAC } from '../../../app/app-reducer';

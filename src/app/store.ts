@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { addTaskAC, removeTasksAC, changeTasksStatusAC, changeTasksTitleAC, setTaskAC, taskReducer } from '../pages/TodolistsLists/Task/task-reducer';
-import { removeTodoAC, addTodoAC, changeTitleTodoAC, changeFilterTodoAC, setTodoAC, todolistReducer, changeEntitiStatusTodoAC } from '../pages/TodolistsLists/todolists-reducer';
+import { removeTodoAC, addTodoAC, changeTitleTodoAC, changeFilterTodoAC, setTodoAC, todolistReducer, changeEntitiStatusTodoAC } from '../pages/TodolistsLists/Todolist/todolists-reducer';
 import { appReducer, setAppErrorAC, setAppStatusAC } from './app-reducer';
 
 

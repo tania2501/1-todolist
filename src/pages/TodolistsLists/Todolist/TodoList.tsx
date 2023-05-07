@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from "../../../app/app/hooks/appHooks"
 import { EditableSpan } from "../../../components/EditableSpan/EditableSpan";
 import { SuperButton } from "../../../components/SuperButton/SuperButton";
 import { SuperInput } from "../../../components/SuperInput/SuperInput";
-import { FilterValuesType, InitialStateTodoListType } from "../todolists-reducer";
+import { FilterValuesType, InitialStateTodoListType } from "./todolists-reducer";
 
 type TodoPropsType = {
   todolist: InitialStateTodoListType;

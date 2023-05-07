@@ -1,7 +1,7 @@
 import { Provider } from "react-redux"
 import React from "react"
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { todolistReducer } from "../../pages/TodolistsLists/todolists-reducer";
+import { todolistReducer } from "../../pages/TodolistsLists/Todolist/todolists-reducer";
 import { appReducer } from "../../app/app-reducer";
 import { taskReducer } from "../../pages/TodolistsLists/Task/task-reducer";
 import { TaskStatus } from "../../api/todolists-api";

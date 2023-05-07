@@ -8,10 +8,8 @@ export type SuperInputType = {
 }
 
 export const SuperInput = React.memo(({disable = false, ...props}: SuperInputType) => {
-
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
   const [error, setError]= useState<string | null>(null);
-
   const onNewTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTaskTitle(e.currentTarget.value);
   };

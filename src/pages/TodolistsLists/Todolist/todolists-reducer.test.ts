@@ -1,4 +1,4 @@
-import { StatusType } from "../../app/app-reducer";
+import { StatusType } from "../../../app/app-reducer";
 import { FilterValuesType, InitialStateTodoListType, addTodoAC, changeEntitiStatusTodoAC, changeFilterTodoAC, changeTitleTodoAC, removeTodoAC, setTodoAC, todolistReducer } from "./todolists-reducer";
 import { v1 } from "uuid";
 

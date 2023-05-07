@@ -1,4 +1,4 @@
-import { InitialStateTodoListType, addTodoAC, todolistReducer } from './todolists-reducer';
+import { InitialStateTodoListType, addTodoAC, todolistReducer } from './Todolist/todolists-reducer';
 import { MainTasksType, taskReducer } from './Task/task-reducer';
 
 
