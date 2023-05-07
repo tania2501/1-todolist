@@ -13,8 +13,11 @@ import { TodolistsList } from "../pages/TodolistsList";
 import { ErrorBar } from "../components/ErrorBar/ErrorBar";
 import { useAppSelector } from "./app/hooks/appHooks";
 
+type PropsType = {
+  demo?: boolean
+}
 
-function AppWithRedux() {
+function AppWithRedux({demo = false}: PropsType) {
   const status = useAppSelector(state => state.app.status)
   return (
     <div className="App">
@@ -37,7 +40,7 @@ function AppWithRedux() {
       </AppBar>
       {status === 'loading' && <LinearProgress color="secondary" />}
       <Container fixed>
-        <TodolistsList/>
+        <TodolistsList demo={demo}/>
       </Container>
       <ErrorBar/>
     </div>

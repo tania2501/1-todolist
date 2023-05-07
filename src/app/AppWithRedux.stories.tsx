@@ -13,5 +13,5 @@ export default meta;
 type Story = StoryObj<typeof AppWithRedux>;
 
 export const AppWithReduxBase: Story = { 
-  render: () => <AppWithRedux/>
+  render: () => <AppWithRedux demo={true}/>
 }

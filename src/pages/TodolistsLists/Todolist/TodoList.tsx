@@ -14,40 +14,42 @@ import { useAppDispatch, useAppSelector } from "../../../app/app/hooks/appHooks"
 import { EditableSpan } from "../../../components/EditableSpan/EditableSpan";
 import { SuperButton } from "../../../components/SuperButton/SuperButton";
 import { SuperInput } from "../../../components/SuperInput/SuperInput";
-import { FilterValuesType } from "../todolists-reducer";
+import { FilterValuesType, InitialStateTodoListType } from "../todolists-reducer";
 
-type TitleProps = {
-  title: string;
+type TodoPropsType = {
+  todolist: InitialStateTodoListType;
   changeFilter: (value: FilterValuesType, tId: string) => void;
-  filter: FilterValuesType;
-  tId: string;
   removeTodolist: (todolistId: string) => void;
   changeTodolistTitle: (title: string, todolistId: string) => void;
+  demo?: boolean
 };
 
-export const TodoList = React.memo((props: TitleProps) => {
+export const TodoList = React.memo(({demo = false, ...props}: TodoPropsType) => {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(getTasks(props.tId));
-  }, [dispatch, props.tId]);
-  const tasks = useAppSelector(state => state.tasks[props.tId])
+    if(demo) {
+      return
+    }
+    dispatch(getTasks(props.todolist.id));
+  }, [dispatch, props.todolist.id, demo]);
+  const tasks = useAppSelector(state => state.tasks[props.todolist.id])
 
   const onAllClick = useCallback(() => {
-    props.changeFilter("All", props.tId);
+    props.changeFilter("All", props.todolist.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.changeFilter, props.tId]);
+  }, [props.changeFilter, props.todolist.id]);
   const onCompletedClick = useCallback(() => {
-    props.changeFilter("Done", props.tId);
+    props.changeFilter("Done", props.todolist.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.changeFilter, props.tId]);
+  }, [props.changeFilter, props.todolist.id]);
   const onActiveClick = useCallback(() => {
-    props.changeFilter("Active", props.tId);
+    props.changeFilter("Active", props.todolist.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.changeFilter, props.tId]);
+  }, [props.changeFilter, props.todolist.id]);
   const removeTodolist = useCallback(() => {
-    props.removeTodolist(props.tId);
+    props.removeTodolist(props.todolist.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.removeTodolist, props.tId]);
+  }, [props.removeTodolist, props.todolist.id]);
   const removeTasks = (todolistId: string, id: string) => {
     dispatch(deleteTask(todolistId, id));
   };
@@ -58,14 +60,14 @@ export const TodoList = React.memo((props: TitleProps) => {
     dispatch(updateTaskTitle(todolistId, taskId, title));
   };
   const changeTodolistTitleHandler = useCallback((title: string) => {
-    props.changeTodolistTitle(title, props.tId);
+    props.changeTodolistTitle(title, props.todolist.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.changeTodolistTitle, props.tId]);
+  }, [props.changeTodolistTitle, props.todolist.id]);
   let taskForTodoList = tasks;
-  if (props.filter === "Done") {
+  if (props.todolist.filter === "Done") {
     taskForTodoList = taskForTodoList.filter((t) => t.status === TaskStatus.Completed);
   }
-  if (props.filter === "Active") {
+  if (props.todolist.filter === "Active") {
     taskForTodoList = taskForTodoList.filter((t) => t.status === TaskStatus.New);
   }
   return (
@@ -73,41 +75,42 @@ export const TodoList = React.memo((props: TitleProps) => {
       <div>
         <h3>
           <EditableSpan
-            title={props.title}
+            title={props.todolist.title}
             changeTitleValue={changeTodolistTitleHandler}
           />
-          <Button onClick={removeTodolist} color="secondary">
+          <Button onClick={removeTodolist} color="secondary" disabled={props.todolist.entitiStatus === 'loading'}>
             <DeleteIcon />
           </Button>
         </h3>
         <SuperInput
           addItem={useCallback(
             (title) => {
-              dispatch(createTask(title, props.tId));
+              dispatch(createTask(title, props.todolist.id));
             },
-            [dispatch, props.tId]
+            [dispatch, props.todolist.id]
           )}
+          disable={props.todolist.entitiStatus === 'loading'}
         />
         <ul>
           {taskForTodoList.map((t) => (
-            <Task task={t} tId={props.tId} key={t.id} changeStatus={changeStatus} changeTitle={changeTitleValue} removeTask={removeTasks}/>
+            <Task task={t} tId={props.todolist.id} key={t.id} changeStatus={changeStatus} changeTitle={changeTitleValue} removeTask={removeTasks}/>
           ))}
         </ul>
         <div className="filterButton">
           <SuperButton
             title={"All"}
             onclick={onAllClick}
-            filterType={props.filter}
+            filterType={props.todolist.filter}
           />
           <SuperButton
             title={"Active"}
             onclick={onActiveClick}
-            filterType={props.filter}
+            filterType={props.todolist.filter}
           />
           <SuperButton
             title={"Done"}
             onclick={onCompletedClick}
-            filterType={props.filter}
+            filterType={props.todolist.filter}
           />
         </div>
       </div>

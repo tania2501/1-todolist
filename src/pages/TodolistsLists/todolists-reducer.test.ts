@@ -1,4 +1,5 @@
-import { FilterValuesType, InitialStateTodoListType, addTodoAC, changeFilterTodoAC, changeTitleTodoAC, removeTodoAC, setTodoAC, todolistReducer } from "./todolists-reducer";
+import { StatusType } from "../../app/app-reducer";
+import { FilterValuesType, InitialStateTodoListType, addTodoAC, changeEntitiStatusTodoAC, changeFilterTodoAC, changeTitleTodoAC, removeTodoAC, setTodoAC, todolistReducer } from "./todolists-reducer";
 import { v1 } from "uuid";
 
 const todolist1 = v1()
@@ -45,4 +46,12 @@ test('todolists shod be added in state', () => {
   const endState = todolistReducer([], action)
 
   expect(endState.length).toBe(2)
+});
+test('correct entiti status of todolist shoud be changed', () => {
+  let newStatus: StatusType = 'loading';
+
+  const endState = todolistReducer(startState, changeEntitiStatusTodoAC(newStatus, todolist2))
+
+  expect(endState[0].entitiStatus).toBe('idle')
+  expect(endState[1].entitiStatus).toBe(newStatus)
 });

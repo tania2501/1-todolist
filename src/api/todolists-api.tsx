@@ -78,7 +78,7 @@ export type UpdateTaskModelType = {
   startDate: string;
   deadline: string;
 }
-type ResponseType<D> = {
+export type ResponseType<D> = {
   resultCode: number;
   messages: string[];
   data: D;

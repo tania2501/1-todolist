@@ -10,7 +10,8 @@ const meta: Meta<typeof SuperInput> = {
   component: SuperInput,
   tags: ['autodocs'],
   args: {
-    addItem: action('type text')
+    addItem: action('type text'),
+    disable: false
   },
 };
 
@@ -18,7 +19,11 @@ export default meta;
 type Story = StoryObj<typeof SuperInput>;
 
 export const SuperInputBase: Story = {} 
-
+export const SuperInputDisabled: Story = {
+  args: {
+    disable: true
+  }
+} 
 export const SuperInputError = (args: SuperInputType) => {
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
   const [error, setError]= useState<string | null>('Field is required!');

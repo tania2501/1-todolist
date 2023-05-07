@@ -4,9 +4,10 @@ import { AddToPhotos } from "@mui/icons-material";
 
 export type SuperInputType = {
   addItem: (title: string) => void;
+  disable?: boolean
 }
 
-export const SuperInput = React.memo((props: SuperInputType) => {
+export const SuperInput = React.memo(({disable = false, ...props}: SuperInputType) => {
 
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
   const [error, setError]= useState<string | null>(null);
@@ -41,8 +42,10 @@ export const SuperInput = React.memo((props: SuperInputType) => {
         error={!!error}
         helperText={error}
         variant="standard"
-        color="secondary" label='Type value'/>
-      <IconButton onClick={addNewTask} color='secondary' size="small" className="addButton"><AddToPhotos/></IconButton>
+        color="secondary" label='Type value'
+        disabled={disable}
+        inputProps={{maxLength: 100}}/>
+      <IconButton onClick={addNewTask} color='secondary' size="small" className="addButton" disabled={disable}><AddToPhotos/></IconButton>
     </div>
   )
 });

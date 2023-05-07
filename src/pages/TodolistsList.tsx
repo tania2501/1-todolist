@@ -1,17 +1,22 @@
 import { Grid, Paper } from '@mui/material';
-import { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { TodoList } from './TodolistsLists/Todolist/TodoList';
 import { getTodolists, FilterValuesType, changeFilterTodoAC, deleteTodolists, createTodolists, updateTodolistTitle } from './TodolistsLists/todolists-reducer';
 import { useAppSelector, useAppDispatch } from '../app/app/hooks/appHooks';
 import { SuperInput } from '../components/SuperInput/SuperInput';
 
-
-export const TodolistsList = () => {
+type PropsType = {
+  demo?: boolean
+}
+export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
   const todolist = useAppSelector(state => state.todolists);
   const dispatch = useAppDispatch();
   useEffect(() => {
+    if(demo) {
+      return;
+    }
     dispatch(getTodolists());
-  }, [dispatch]);
+  }, [dispatch, demo]);
   const changeFilter = useCallback(
     (value: FilterValuesType, tId: string) => {
       const action = changeFilterTodoAC(value, tId);
@@ -40,13 +45,12 @@ export const TodolistsList = () => {
               <Grid item key={tl.id}>
                 <Paper elevation={3} className="paper">
                   <TodoList
-                    title={tl.title}
+                    todolist={tl}
                     changeFilter={changeFilter}
-                    filter={tl.filter}
-                    tId={tl.id}
                     key={tl.id}
                     removeTodolist={removeTodolist}
                     changeTodolistTitle={changeTodolistTitle}
+                    demo={demo}
                   />{" "}
                 </Paper>
               </Grid>
