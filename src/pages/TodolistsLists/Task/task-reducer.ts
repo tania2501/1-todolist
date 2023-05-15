@@ -76,6 +76,7 @@ export const createTask = (title: string, taskId: string): ThunkType => async di
   TodolistsAPI.createTask(title, taskId).then((res) => {
     if (res.data.resultCode === 0) {
       dispatch(addTaskAC(res.data.data.item));
+      dispatch(setAppStatusAC('succeeded'))
     } else {
       handleServerAppError(res.data, dispatch)
     } 

@@ -1,0 +1,12 @@
+.error {
+  font-size: 12px;
+  color: red;
+  margin: 5px;
+}
+.remember {
+  font-size: 12px;
+  display: flex;
+}
+.buttons {
+  width: 51%;
+}

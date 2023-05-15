@@ -31,7 +31,12 @@ todolists: [
   },
   app: {
     error: null,
-    status: 'idle'
+    status: 'idle',
+    initialized: false,
+    name: ''
+  },
+  login: {
+    isAuth: false
   }
 }
 const store = configureStore({reducer: rootReducer, preloadedState: initialState});

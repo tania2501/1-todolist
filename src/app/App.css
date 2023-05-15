@@ -44,3 +44,16 @@
   padding: 20px;
   margin-top: 20px;
 }
+.link {
+  text-decoration: none;
+  color: #fff;
+}
+.loader {
+  position: fixed;
+  width: 100%;
+  left: 50%;
+  top: 30%
+}
+.login img {
+  width: 20px;
+}

@@ -4,15 +4,17 @@ import { TodoList } from './Todolist/TodoList';
 import { getTodolists, FilterValuesType, changeFilterTodoAC, deleteTodolists, createTodolists, updateTodolistTitle } from './Todolist/todolists-reducer';
 import { useAppSelector, useAppDispatch } from '../../app/app/hooks/appHooks';
 import { SuperInput } from '../../components/SuperInput/SuperInput';
+import { Navigate } from 'react-router';
 
 type PropsType = {
   demo?: boolean
 }
 export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
   const todolist = useAppSelector(state => state.todolists);
+  const auth = useAppSelector(state => state.login.isAuth)
   const dispatch = useAppDispatch();
   useEffect(() => {
-    if(demo) {
+    if(demo || !auth) {
       return;
     }
     dispatch(getTodolists());
@@ -34,6 +36,9 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     (title: string, todolistId: string) => {
       dispatch(updateTodolistTitle(title, todolistId));
     }, [dispatch]);
+  if(!auth) {
+    return <Navigate to='/login'/>
+  }
   return (
     <>
     <Grid container>
