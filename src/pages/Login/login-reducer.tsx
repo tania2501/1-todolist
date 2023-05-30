@@ -1,31 +1,33 @@
+import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { LoginFormType, authAPI } from "../../api/todolists-api"
 import { authUser, setAppStatusAC } from "../../app/app-reducer"
-import { ActionType } from "../../app/store"
 import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils"
 import { ThunkType } from "../TodolistsLists/Todolist/todolists-reducer"
 
 
-const InitialState: InitialStateType = {
+const InitialState = {
   isAuth: false
 }
-export const loginReducer = (state: InitialStateType = InitialState, action: ActionType): InitialStateType => {
-  switch(action.type) {
-    case 'LOGIN': 
-      return {...state, isAuth: action.isAuth}
-    default:
-      return {...state}
+const slice = createSlice({
+  name: 'auth',
+  initialState: InitialState,
+  reducers: {
+    setAuthAC(state, action: PayloadAction<{isAuth: boolean}>) {
+      state.isAuth = action.payload.isAuth
+    }
   }
-}
+})
+export const loginReducer = slice.reducer
 //AC
-export const setAuthAC = (isAuth: boolean) =>({type: 'LOGIN', isAuth} as const)
+export const {setAuthAC} = slice.actions
 ///thunks 
 export const loginTC = (data: LoginFormType): ThunkType => async dispatch => {
-  dispatch(setAppStatusAC('loading'))
+  dispatch(setAppStatusAC({status: 'loading'}))
   authAPI.login(data).then(res => {
     if(res.data.resultCode === 0) {
-      dispatch(setAuthAC(true))
+      dispatch(setAuthAC({isAuth: true}))
       dispatch(authUser())
-      dispatch(setAppStatusAC('succeeded'))
+      dispatch(setAppStatusAC({status: 'succeeded'}))
     } else {
       handleServerAppError(res.data, dispatch)
     }
@@ -36,10 +38,6 @@ export const loginTC = (data: LoginFormType): ThunkType => async dispatch => {
 export const logOutUser = (): ThunkType => async dispatch => {
   const res = await authAPI.logOut()
   if (res.resultCode === 0) {
-    dispatch(setAuthAC(false));
+    dispatch(setAuthAC({isAuth: false}));
   }
 };
-//types
-export type InitialStateType = {
-  isAuth: boolean
-}

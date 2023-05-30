@@ -9,7 +9,7 @@ export const ErrorBar = () => {
   const dispatch = useAppDispatch();
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    dispatch(setAppErrorAC(null))
+    dispatch(setAppErrorAC({error: null}))
   };
   return (
     <div className={s.errorMessage}>

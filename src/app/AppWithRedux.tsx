@@ -13,7 +13,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { TodolistsList } from "../pages/TodolistsLists/TodolistsList";
 import { ErrorBar } from "../components/ErrorBar/ErrorBar";
 import { useAppDispatch, useAppSelector } from "./app/hooks/appHooks";
-import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
+import { BrowserRouter, Routes, Route, NavLink, Navigate } from "react-router-dom";
 import { Login } from "../pages/Login/Login";
 import logout from './../assets/logout-32.png'
 import { useEffect } from "react";
@@ -32,7 +32,8 @@ function AppWithRedux({ demo = false }: PropsType) {
   const dispatch = useAppDispatch()
   useEffect(()=> {
     dispatch(authUser())
-  }, [])
+    // eslint-disable-next-line
+  }, [dispatch])
   
   if (!initialized) {
     return <div className="loader">
@@ -42,6 +43,7 @@ function AppWithRedux({ demo = false }: PropsType) {
   
   return (
     <BrowserRouter>
+    {auth ? <Navigate to='/'/> : null}
       <div className="App">
         <AppBar position="static" color="secondary">
           <Toolbar>

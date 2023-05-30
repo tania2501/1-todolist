@@ -1,7 +1,7 @@
+import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { authAPI } from "../api/todolists-api"
 import { setAuthAC } from "../pages/Login/login-reducer"
 import { ThunkType } from "../pages/TodolistsLists/Todolist/todolists-reducer"
-import { ActionType } from "./store"
 
 const InitialState: InitialStateType = {
   status: 'idle',
@@ -10,30 +10,33 @@ const InitialState: InitialStateType = {
   name: ''
 }
 
-export const appReducer = (state: InitialStateType = InitialState, action: ActionType): InitialStateType => {
-  switch(action.type) {
-    case 'APP/SET-STATUS' :
-      return {...state, status: action.status}
-    case 'APP/SET-ERROR':
-      return {...state, error: action.error}
-    case 'APP/SET-INITIALIZED':
-      return {...state, initialized: action.initialized, name: action.name}
-    default:
-      return {...state}
+const slice =  createSlice({
+  name: 'app',
+  initialState: InitialState,
+  reducers: {
+    setAppErrorAC(state, action: PayloadAction<{error: string | null}>) {
+      state.error = action.payload.error
+    },
+    setAppStatusAC(state, action: PayloadAction<{status: StatusType}>) {
+      state.status = action.payload.status
+    },
+    setInitializedAC(state, action: PayloadAction<{initialized: boolean, name: string}>) {
+      state.initialized = action.payload.initialized;
+      state.name = action.payload.name
+    },
   }
-}
+})
+export const appReducer = slice.reducer; 
 //AC
-export const setAppErrorAC = (error: string | null) =>({type: 'APP/SET-ERROR', error} as const)
-export const setAppStatusAC = (status: StatusType) =>({type: 'APP/SET-STATUS', status} as const)
-export const setInitializedAC = (initialized: boolean, name: string) =>({type: 'APP/SET-INITIALIZED', initialized, name} as const)
+export const {setAppErrorAC, setAppStatusAC, setInitializedAC} = slice.actions;
 ///thunks
 export const authUser = (): ThunkType => async (dispatch) => {
   return authAPI.auth().then(res=> {
     if (res.resultCode === 0) {
-      dispatch(setInitializedAC(true, res.data.login));
-      dispatch(setAuthAC(true))
+      dispatch(setInitializedAC({initialized: true, name: res.data.login}));
+      dispatch(setAuthAC({isAuth: true}))
     }
-    dispatch(setInitializedAC(true, res.data.login));
+    dispatch(setInitializedAC({initialized: true, name: res.data.login}));
   })
 };
 //types

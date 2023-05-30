@@ -1,17 +1,18 @@
 import { ThunkDispatch } from "redux-thunk";
 import { ResponseType } from "../api/todolists-api";
 import { setAppErrorAC, setAppStatusAC } from "../app/app-reducer";
-import { ActionType, AppRootState } from "../app/store";
+import { AppRootState } from "../app/store";
+import { Action } from "@reduxjs/toolkit";
 
-export const handleServerAppError = <D>(data: ResponseType<D>, dispatch: ThunkDispatch<AppRootState, unknown, ActionType>) => {
+export const handleServerAppError = <D>(data: ResponseType<D>, dispatch: ThunkDispatch<AppRootState, unknown, Action>) => {
     if (data.messages.length) {
-      dispatch(setAppErrorAC(data.messages[0]))
+      dispatch(setAppErrorAC({error: data.messages[0]}))
     } else {
-      dispatch(setAppErrorAC('some error'))
+      dispatch(setAppErrorAC({error: 'some error'}))
     }
-  dispatch(setAppStatusAC('failed'))
+  dispatch(setAppStatusAC({status: 'failed'}))
 }
-export const handleServerNetworkError = (message: string, dispatch: ThunkDispatch<AppRootState, unknown, ActionType>) => {
-  dispatch(setAppErrorAC(message ? message : 'some error occurred'))
-  dispatch(setAppStatusAC('failed'))
+export const handleServerNetworkError = (error: string, dispatch: ThunkDispatch<AppRootState, unknown, Action>) => {
+  dispatch(setAppErrorAC(error ? {error: error} : {error: 'some error occurred'}))
+  dispatch(setAppStatusAC({status: 'failed'}))
 }

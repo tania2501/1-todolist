@@ -18,10 +18,10 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
       return;
     }
     dispatch(getTodolists());
-  }, [dispatch, demo]);
+  }, [dispatch, demo, auth]);
   const changeFilter = useCallback(
     (value: FilterValuesType, tId: string) => {
-      const action = changeFilterTodoAC(value, tId);
+      const action = changeFilterTodoAC({filter: value,  tId});
       dispatch(action);
     }, [dispatch]);
   const removeTodolist = useCallback(
