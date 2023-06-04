@@ -31,7 +31,9 @@ function AppWithRedux({ demo = false }: PropsType) {
   const name = useAppSelector(state => state.app.name)
   const dispatch = useAppDispatch()
   useEffect(()=> {
-    dispatch(authUser())
+    if (!demo) {
+      dispatch(authUser())
+    }
     // eslint-disable-next-line
   }, [dispatch])
   

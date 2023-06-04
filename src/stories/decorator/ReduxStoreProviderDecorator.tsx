@@ -7,11 +7,13 @@ import { taskReducer } from "../../pages/TodolistsLists/Task/task-reducer";
 import { TaskStatus } from "../../api/todolists-api";
 import { v1 } from "uuid";
 import { AppRootState } from "../../app/store";
+import { loginReducer } from "../../pages/Login/login-reducer";
 
 const rootReducer = combineReducers({
   todolists: todolistReducer,
   tasks: taskReducer,
-  app: appReducer
+  app: appReducer,
+  login: loginReducer
 })
 const initialState: AppRootState = {
 todolists: [
@@ -32,11 +34,11 @@ todolists: [
   app: {
     error: null,
     status: 'idle',
-    initialized: false,
+    initialized: true,
     name: ''
   },
   login: {
-    isAuth: false
+    isAuth: true
   }
 }
 const store = configureStore({reducer: rootReducer, preloadedState: initialState});
