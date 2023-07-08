@@ -1,5 +1,5 @@
 {
-  "name": "1-lesson",
+  "name": "1-todolist",
   "type": "module",
   "version": "0.1.0",
   "private": true,
@@ -10,6 +10,7 @@
   },
   "homepage": "https://tania2501.github.io/1-todolist",
   "dependencies": {
+    "@babel/runtime": "^7.22.6",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@material-ui/lab": "^4.0.0-alpha.61",

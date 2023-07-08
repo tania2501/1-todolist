@@ -27,7 +27,6 @@ export const Login = (props: LoginFormPropsType) => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isValid },
   } = useForm<LoginFormType>({
     mode: "onChange",
@@ -48,6 +47,7 @@ export const Login = (props: LoginFormPropsType) => {
               <a
                 href={"https://social-network.samuraijs.com/"}
                 target={"_blank"}
+                rel="noreferrer"
               >
                 {" "}
                 here

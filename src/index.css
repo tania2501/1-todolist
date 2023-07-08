@@ -7,6 +7,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   font-family: "Poppins", sans-serif;
+  background: url(https://static.vecteezy.com/system/resources/previews/001/984/892/original/banner-design-geometric-hexagon-colorful-overlapping-with-background-free-vector.jpg) no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
   font-family: "Ubuntu", sans-serif;
 }
 code {

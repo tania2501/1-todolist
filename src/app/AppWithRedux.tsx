@@ -3,13 +3,11 @@ import {
   Button,
   CircularProgress,
   Container,
-  IconButton,
   LinearProgress,
   Toolbar,
   Typography,
 } from "@mui/material";
 import "./App.css";
-import MenuIcon from "@mui/icons-material/Menu";
 import { TodolistsList } from "../pages/TodolistsLists/TodolistsList";
 import { ErrorBar } from "../components/ErrorBar/ErrorBar";
 import { useAppDispatch, useAppSelector } from "./app/hooks/appHooks";
