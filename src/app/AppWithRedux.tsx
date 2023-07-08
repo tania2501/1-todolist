@@ -45,21 +45,12 @@ function AppWithRedux({ demo = false }: PropsType) {
   
   return (
     <BrowserRouter>
-    {auth ? <Navigate to='/'/> : null}
+    {auth ? <Navigate to='/'/> : <Navigate to='/login'/>}
       <div className="App">
-        <AppBar position="static" color="secondary">
+        <AppBar component={'nav'} position="static" color="secondary">
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              News
+              Todo List
             </Typography>
             <Button color="inherit">{auth ? <div className='login'><span>{name}</span><img src={logout} alt="#" onClick={()=>dispatch(logOutUser())}/></div> : <NavLink to="/login">Login</NavLink>}</Button>
           </Toolbar>
