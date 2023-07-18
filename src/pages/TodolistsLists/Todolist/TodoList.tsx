@@ -50,14 +50,14 @@ export const TodoList = React.memo(({demo = false, ...props}: TodoPropsType) => 
     props.removeTodolist(props.todolist.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.removeTodolist, props.todolist.id]);
-  const removeTasks = (todolistId: string, id: string) => {
-    dispatch(deleteTask(todolistId, id));
+  const removeTasks = (tId: string, taskId: string) => {
+    dispatch(deleteTask({tId, taskId}));
   };
-  const changeStatus = (todolistId: string, taskId: string, status: TaskStatus) => {
-    dispatch(changeTaskStatus(todolistId, taskId, status));
+  const changeStatus = (todoId: string, taskId: string, status: TaskStatus) => {
+    dispatch(changeTaskStatus({todoId, taskId, status}));
   };
-  const changeTitleValue = (todolistId: string, taskId: string, title: string) => {
-    dispatch(updateTaskTitle(todolistId, taskId, title));
+  const changeTitleValue = (idTodo: string, idTask: string, title: string) => {
+    dispatch(updateTaskTitle({idTodo,  idTask, title}));
   };
   const changeTodolistTitleHandler = useCallback((title: string) => {
     props.changeTodolistTitle(title, props.todolist.id);
@@ -85,7 +85,7 @@ export const TodoList = React.memo(({demo = false, ...props}: TodoPropsType) => 
         <SuperInput
           addItem={useCallback(
             (title) => {
-              dispatch(createTask(title, props.todolist.id));
+              dispatch(createTask({title: title, taskId: props.todolist.id}));
             },
             [dispatch, props.todolist.id]
           )}

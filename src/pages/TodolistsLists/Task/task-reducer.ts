@@ -1,140 +1,150 @@
-import {ThunkType, addTodoAC, removeTodoAC, setTodoAC } from '../Todolist/todolists-reducer';
+import { createTodolists, deleteTodolists, getTodolists } from '../Todolist/todolists-reducer';
 import { TaskType, TaskStatus, TodolistsAPI, UpdateTaskModelType } from '../../../api/todolists-api';
 import { setAppStatusAC } from '../../../app/app-reducer';
 import { handleServerAppError, handleServerNetworkError } from '../../../utils/error-utils';
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { ThunkApiType } from '../../Login/login-reducer';
 
 const initialState: MainTasksType = {} as MainTasksType
+
+///thunks
+export const getTasks = createAsyncThunk<{ tasks: TaskType[], todolistId: string }, string, ThunkApiType>('tasks/getTasks', async (tId, { dispatch, rejectWithValue }) => {
+  dispatch(setAppStatusAC({ status: 'loading' }))
+  try {
+    const res = await TodolistsAPI.getTasks(tId);
+    dispatch(setAppStatusAC({ status: 'succeeded' }))
+    return { tasks: res.data.items, todolistId: tId }
+  } catch (e: any) {
+    handleServerNetworkError(e.message, dispatch)
+    return rejectWithValue(null)
+  }
+})
+export const deleteTask = createAsyncThunk<{ idTodo: string, idTask: string }, { tId: string, taskId: string }, ThunkApiType>('tasks/deleteTask', async (arg, { dispatch, rejectWithValue }) => {
+  dispatch(setAppStatusAC({ status: 'loading' }))
+  try {
+    const res = await TodolistsAPI.deleteTask(arg.tId, arg.taskId)
+    if (res.data.resultCode === 0) {
+      dispatch(setAppStatusAC({ status: 'succeeded' }))
+      return { idTodo: arg.tId, idTask: arg.taskId };
+    } else {
+      handleServerAppError(res.data, dispatch)
+      return rejectWithValue(null)
+    }
+  } catch (e: any) {
+    handleServerNetworkError(e.message, dispatch)
+    return rejectWithValue(null)
+  }
+})
+export const createTask = createAsyncThunk<{ task: TaskType }, { title: string, taskId: string }, ThunkApiType>('tasks/createTask', async (arg, { dispatch, rejectWithValue }) => {
+  dispatch(setAppStatusAC({ status: 'loading' }))
+  try {
+    const res = await TodolistsAPI.createTask(arg.title, arg.taskId)
+    if (res.data.resultCode === 0) {
+      dispatch(setAppStatusAC({ status: 'succeeded' }))
+      return { task: res.data.data.item };
+    } else {
+      handleServerAppError(res.data, dispatch)
+      return rejectWithValue(null)
+    }
+  } catch (e: any) {
+    handleServerNetworkError(e.message, dispatch)
+    return rejectWithValue(null)
+  }
+});
+export const updateTaskTitle = createAsyncThunk<{ idTodo: string, idTask: string, title: string }, { idTodo: string, idTask: string, title: string }, ThunkApiType>('tasks/changeTitle', async (arg, { dispatch, getState, rejectWithValue }) => {
+  dispatch(setAppStatusAC({ status: 'loading' }))
+  try {
+    const state = getState();
+    const task = state.tasks[arg.idTodo].find(t => t.id === arg.idTask)
+    if (!task) {
+      console.warn('task not found in state')
+      return rejectWithValue(null)
+    }
+    const model: UpdateTaskModelType = { ...task, title: arg.title }
+    const res = await TodolistsAPI.updateTitleTask(arg.idTodo, arg.idTask, model)
+    if (res.data.resultCode === 0) {
+      dispatch(setAppStatusAC({ status: 'succeeded' }))
+      return { idTodo: arg.idTodo, idTask: arg.idTask, title: arg.title };
+    } else {
+      handleServerAppError(res.data, dispatch)
+      return rejectWithValue(null)
+    }
+  } catch (e: any) {
+    handleServerNetworkError(e.message, dispatch)
+    return rejectWithValue(null)
+  }
+});
+export const changeTaskStatus = createAsyncThunk<{ idTodo: string, idTask: string, status: TaskStatus }, { todoId: string, taskId: string, status: TaskStatus }, ThunkApiType>('tasks/changeStatus', async (arg, { dispatch, getState, rejectWithValue }) => {
+  dispatch(setAppStatusAC({ status: 'loading' }))
+
+  try {
+    const state = getState();
+    const task = state.tasks[arg.todoId].find(t => t.id === arg.taskId)
+    if (!task) {
+      console.warn('task not found in state')
+      return rejectWithValue(null)
+    }
+    const model: UpdateTaskModelType = { ...task, status: arg.status }
+    const res = await TodolistsAPI.updateStatus(arg.todoId, arg.taskId, model)
+    if (res.data.resultCode === 0) {
+      dispatch(setAppStatusAC({ status: 'succeeded' }))
+      return { idTodo: arg.todoId, idTask: arg.taskId, status: arg.status };
+    } else {
+      handleServerAppError(res.data, dispatch)
+      return rejectWithValue(null)
+    }
+  } catch (e: any) {
+    handleServerNetworkError(e.message, dispatch)
+    return rejectWithValue(null)
+  }
+});
 //reducer
 const slice = createSlice({
   name: 'tasks',
   initialState: initialState,
-  reducers: {
-    addTaskAC(state, action: PayloadAction<{task: TaskType}>) {
-      state[action.payload.task.todoListId].unshift(action.payload.task)
-    },
-    removeTasksAC(state, action: PayloadAction<{idTodo: string, idTask: string}>) {
-      const tasks = state[action.payload.idTodo];
-      const index = tasks.findIndex( t => t.id === action.payload.idTask)
-      if(index > -1) {
-        tasks.splice(index, 1)
-      } 
-    },
-    changeTasksStatusAC(state, action: PayloadAction<{idTodo: string, idTask: string, status: TaskStatus}>) {
-      const tasks = state[action.payload.idTodo];
-      const index = tasks.findIndex( t => t.id === action.payload.idTask)
-      if(index > -1) {
-        tasks[index].status = action.payload.status
-      } 
-    },
-    setTaskAC(state, action: PayloadAction<{tasks: TaskType[], todolistId: string}>) {
-      state[action.payload.todolistId] = action.payload.tasks
-    },
-    changeTasksTitleAC(state, action: PayloadAction<{idTodo: string, idTask: string, title: string}>) {
-      const tasks = state[action.payload.idTodo];
-      const index = tasks.findIndex( t => t.id === action.payload.idTask)
-      if(index > -1) {
-        tasks[index].title = action.payload.title
-      } 
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(addTodoAC, (state, action) => {
-      state[action.payload.todolist.id] = []
+    builder.addCase(createTodolists.fulfilled, (state, action) => {
+      state[action.payload.id] = []
     });
-    builder.addCase(removeTodoAC, (state, action) => {
-      delete state[action.payload.tId]
+    builder.addCase(deleteTodolists.fulfilled, (state, action) => {
+      delete state[action.payload]
     });
-    builder.addCase(setTodoAC, (state, action) => {
+    builder.addCase(getTodolists.fulfilled, (state, action) => {
       action.payload.todolists.forEach((tl: any) => {
         state[tl.id] = []
       });
-    })
+    });
+    builder.addCase(getTasks.fulfilled, (state, action) => {
+      state[action.payload.todolistId] = action.payload.tasks
+    });
+    builder.addCase(deleteTask.fulfilled, (state, action) => {
+      const tasks = state[action.payload.idTodo];
+      const index = tasks.findIndex(t => t.id === action.payload.idTask)
+      if (index > -1) {
+        tasks.splice(index, 1)
+      }
+    });
+    builder.addCase(createTask.fulfilled, (state, action) => {
+      state[action.payload.task.todoListId].unshift(action.payload.task)
+    });
+    builder.addCase(updateTaskTitle.fulfilled, (state, action) => {
+      const tasks = state[action.payload.idTodo];
+      const index = tasks.findIndex(t => t.id === action.payload.idTask)
+      if (index > -1) {
+        tasks[index].title = action.payload.title
+      }
+    });
+    builder.addCase(changeTaskStatus.fulfilled, (state, action) => {
+      const tasks = state[action.payload.idTodo];
+      const index = tasks.findIndex(t => t.id === action.payload.idTask)
+      if (index > -1) {
+        tasks[index].status = action.payload.status
+      }
+    });
   }
 })
 export const taskReducer = slice.reducer
-export const {addTaskAC, removeTasksAC, changeTasksStatusAC, changeTasksTitleAC, setTaskAC} = slice.actions
-
-//thunks
-export const getTasks = (tId: string): ThunkType => async dispatch => {
-  dispatch(setAppStatusAC({status: 'loading'}))
-  TodolistsAPI.getTasks(tId).then((res)=>{
-    dispatch(setTaskAC({tasks: res.data.items, todolistId: tId}));
-    dispatch(setAppStatusAC({status: 'succeeded'}))
-  }).catch((e)=>{
-    handleServerNetworkError(e.message, dispatch)
-  })
-  
-}
-export const deleteTask = (tId: string, taskId: string): ThunkType => async dispatch => {
-  dispatch(setAppStatusAC({status: 'loading'}))
-  TodolistsAPI.deleteTask(tId, taskId).then(res=>{
-    if(res.data.resultCode === 0) {
-      dispatch(removeTasksAC({idTodo: tId, idTask: taskId}));
-      dispatch(setAppStatusAC({status: 'succeeded'}))
-    } else {
-      handleServerAppError(res.data, dispatch)
-    }
-  }).catch((e)=>{
-    handleServerNetworkError(e.message, dispatch)
-  })
-  
-}
-export const createTask = (title: string, taskId: string): ThunkType => async dispatch => {
-  dispatch(setAppStatusAC({status: 'loading'}))
-  TodolistsAPI.createTask(title, taskId).then((res) => {
-    if (res.data.resultCode === 0) {
-      dispatch(addTaskAC({task: res.data.data.item}));
-      dispatch(setAppStatusAC({status: 'succeeded'}))
-    } else {
-      handleServerAppError(res.data, dispatch)
-    } 
-  }).catch((e) => {
-    handleServerNetworkError(e.message, dispatch)
-  })
-}
-export const updateTaskTitle = (todoId: string, taskId: string, title: string): ThunkType => async (dispatch, getState) => {
-  dispatch(setAppStatusAC({status: 'loading'}))
-  const state = getState();
-  const task = state.tasks[todoId].find(t => t.id === taskId)
-  if (!task) {
-    console.warn('task not found in state')
-    return
-  }
-  const model: UpdateTaskModelType = { ...task, title: title }
-  TodolistsAPI.updateTitleTask(todoId, taskId, model).then((res) => {
-    if (res.data.resultCode === 0) {
-      dispatch(changeTasksTitleAC({idTodo: todoId, idTask: taskId, title: title}));
-      dispatch(setAppStatusAC({status: 'succeeded'}))
-    } else {
-      handleServerAppError(res.data, dispatch)
-    }
-  }).catch((e) => {
-    handleServerNetworkError(e.message, dispatch)
-  })
-
-}
-export const changeTaskStatus = (todoId: string, taskId: string, status: TaskStatus): ThunkType => async (dispatch, getState) => {
-  dispatch(setAppStatusAC({status: 'loading'}))
-  const state = getState();
-  const task = state.tasks[todoId].find(t => t.id === taskId)
-  if (!task) {
-    console.warn('task not found in state')
-    return
-  }
-  const model: UpdateTaskModelType = { ...task, status: status }
-  TodolistsAPI.updateStatus(todoId, taskId, model).then(res=>{
-    if(res.data.resultCode === 0) {
-      dispatch(changeTasksStatusAC({idTodo: todoId, idTask: taskId, status}));
-      dispatch(setAppStatusAC({status: 'succeeded'}))
-    } else {
-      handleServerAppError(res.data, dispatch)
-    }
-  }).catch(e=>{
-    handleServerNetworkError(e.message, dispatch)
-  })
-  
-}
 //types
 export type MainTasksType = {
   [key: string]: TaskType[];

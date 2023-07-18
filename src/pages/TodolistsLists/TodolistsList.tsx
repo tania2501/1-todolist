@@ -1,7 +1,7 @@
 import { Grid, Paper } from '@mui/material';
 import React, { useCallback, useEffect } from 'react';
 import { TodoList } from './Todolist/TodoList';
-import { getTodolists, FilterValuesType, changeFilterTodoAC, deleteTodolists, createTodolists, updateTodolistTitle } from './Todolist/todolists-reducer';
+import { getTodolists, FilterValuesType, changeFilterTodoAC, deleteTodolists, createTodolists, updateTodolistTitle, InitialStateTodoListType } from './Todolist/todolists-reducer';
 import { useAppSelector, useAppDispatch } from '../../app/app/hooks/appHooks';
 import { SuperInput } from '../../components/SuperInput/SuperInput';
 import { Navigate } from 'react-router';
@@ -34,7 +34,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     }, [dispatch]);
   const changeTodolistTitle = useCallback(
     (title: string, todolistId: string) => {
-      dispatch(updateTodolistTitle(title, todolistId));
+      dispatch(updateTodolistTitle({id: todolistId, title}));
     }, [dispatch]);
   if(!auth) {
     return <Navigate to='/login'/>
@@ -45,7 +45,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
         <SuperInput addItem={addTodolist} />
         </Grid>
         <Grid container spacing={5}>
-          {todolist.map((tl) => {
+          {todolist.map((tl: InitialStateTodoListType) => {
             return (
               <Grid item key={tl.id}>
                 <Paper elevation={3} className="paper">
