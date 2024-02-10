@@ -36,6 +36,7 @@ export const Login = (props: LoginFormPropsType) => {
     dispatch(loginTC(data));
   };
   if(props.auth) return <Navigate to='/'/>
+  
   return (
     <Grid container justifyContent={"center"}>
       <Grid item xs={4}>
