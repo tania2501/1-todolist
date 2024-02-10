@@ -34,7 +34,6 @@ export const Login = (props: LoginFormPropsType) => {
   });
   const submitHandler: SubmitHandler<LoginFormType> = (data) => {
     dispatch(loginTC(data));
-    console.log(data);
   };
   if(props.auth) return <Navigate to='/'/>
   return (

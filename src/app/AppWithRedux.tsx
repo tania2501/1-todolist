@@ -40,7 +40,8 @@ function AppWithRedux({ demo = false }: PropsType) {
       <CircularProgress color="secondary" />
     </div>
   }
-  
+  console.log(auth)
+
   return (
     <BrowserRouter>
     {auth ? <Navigate to='/'/> : <Navigate to='/login'/>}

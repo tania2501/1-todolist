@@ -34,7 +34,7 @@ export const { setAppErrorAC, setAppStatusAC } = slice.actions;
 export const authUser = createAsyncThunk('app/init', async (_, { dispatch, rejectWithValue }) => {
   try {
     const res = await authAPI.auth()
-    dispatch(setAuthAC({ isAuth: true }))
+    dispatch(setAuthAC( res.resultCode === 1 ? { isAuth: false } : { isAuth: true } ))
     return { initialized: true, name: res.data.login }
   } catch (e: any) {
     return rejectWithValue(e.message)
